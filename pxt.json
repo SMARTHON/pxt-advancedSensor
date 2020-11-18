@@ -1,0 +1,18 @@
+{
+    "name": "AdvancedSensor",
+    "version": "0.1",
+    "description": "This is the Sensor extension for SMARTHON IoT:bit in PXT",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "README.md",
+        "ns.ts",
+        "sensor.ts"
+    ],
+    "testFiles": [
+        "tests.ts"
+    ],
+    "public": true
+}
