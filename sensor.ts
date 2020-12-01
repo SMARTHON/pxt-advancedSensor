@@ -121,15 +121,33 @@ namespace AdvSensor {
     //----------------------------------------------------------------------------
     /**
    * get Dust value
+   * @param ledpin describe parameter here, eg: AnalogPin.P1
    * @param dustpin describe parameter here, eg: AnalogPin.P0
    */
     //% group="Gas"  
-    //% blockId="readDustValue" block="value of Dust sensor at pin %dustpin"
+    //% blockId="readDustValue" block="value of Dust sensor at LEDpin %ledpin Dustpin %dustpin"
     //% weight=60
-    export function ReadDustValue(pin: AnalogPin): number {
-        let Val = pins.analogReadPin(pin)
-        let Val_map = pins.map(Val, 0, 1023, 0, 100)
-        return Val_map
+    export function ReadDustValue(ledpin:DigitalPin, dustpin: AnalogPin): number {
+        let voltage = 0;
+        let dust = 0;
+        pins.digitalWritePin(ledpin, 0);   //on led
+        control.waitMicros(160);
+        voltage = pins.analogReadPin(dustpin);  //read value
+        control.waitMicros(100);
+        pins.digitalWritePin(ledpin, 1);       //off led
+        voltage = pins.map( //remap the voltage to 0~3.3V
+            voltage,
+            0,
+            1023,
+            0,
+            3.3
+        );
+        dust = (voltage*0.17-0.1)
+        if (dust < 0) {
+            dust = 0
+        }
+        return Math.round(dust*1000)
+
     }
 
     /**
@@ -139,10 +157,18 @@ namespace AdvSensor {
     //% group="Gas"  
     //% blockId="readPM25Value" block="value of PM2.5 sensor at pin %PM25pin"
     //% weight=59
-    export function ReadPM25Value(PM25pin: AnalogPin): number {
-        let Val = pins.analogReadPin(PM25pin)
-        let Val_map = pins.map(Val, 0, 1023, 0, 100)
-        return Val_map
+    export function ReadPM25Value(PM25pin: DigitalPin): number {
+        let pm25 = 0
+        while (pins.digitalReadPin(PM25pin) != 0) {
+        }
+        while (pins.digitalReadPin(PM25pin) != 1) {
+        }
+        pm25 = input.runningTimeMicros()
+        while (pins.digitalReadPin(PM25pin) != 0) {
+        }
+        pm25 = input.runningTimeMicros() - pm25
+        pm25 = pm25 / 1000 - 2
+        return pm25;
     }
 
     /**
