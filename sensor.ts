@@ -160,14 +160,16 @@ namespace AdvSensor {
     export function ReadPM25Value(PM25pin: DigitalPin): number {
         let pm25 = 0
         while (pins.digitalReadPin(PM25pin) != 0) {
-        }
+        }//low
         while (pins.digitalReadPin(PM25pin) != 1) {
-        }
-        pm25 = input.runningTimeMicros()
+        }//high
+        pm25 = input.runningTime()//start TimeHigh
         while (pins.digitalReadPin(PM25pin) != 0) {
-        }
-        pm25 = input.runningTimeMicros() - pm25
-        pm25 = pm25 / 1000 - 2
+        }//low
+        pm25 = input.runningTime() - pm25   //End TimeHigh
+        //now var pm25 = TH
+        //Since the the formula P(ug/m3)=1000*(TH)/(TH+TL)
+        //TH+TL assume is 1000ms, so P=1000*TH/1000=TH
         return pm25;
     }
 
