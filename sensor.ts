@@ -1,7 +1,7 @@
 
 
-//% weight=20 color=#a742f5 block="Advanced Sensor"
-namespace AdvSensor {
+//% weight=20 color=#a742f5 block="Advanced Module"
+namespace AdvancedModule {
 
     let NTC_table = [
         999, 997, 995, 993, 991,   // -40  -  -36
@@ -207,6 +207,7 @@ namespace AdvSensor {
     //% group="Gas"  
     //% blockId="readSmokeValue" block="value of MQ2 Smoke sensor at pin %MQ2pin"
     //% weight=58
+	//% blockHidden=true
     export function ReadSmokeValue(MQ2pin: AnalogPin): number {
         let Val = pins.analogReadPin(MQ2pin)
         let Val_map = pins.map(Val, 30, 1023, 0, 100)
@@ -513,7 +514,7 @@ namespace AdvSensor {
 
 //LCD1602
 //-----------------------------------------------------
-// MakerBit blocks supporting both an I2C LCD 1602 display
+
 
 export enum LcdPosition1602 {
   //% block="1"
@@ -811,7 +812,7 @@ export enum TextOption {
    * Displays a text on a LCD1602 in the given position range.
    * The text will be cropped if it is longer than the provided length.
    * If there is space left, it will be filled with pad characters.
-   * @param text the text to show, eg: "MakerBit"
+   * @param text the text to show, eg: "Smarthon"
    * @param startPosition the start position on the LCD, [1 - 32]
    * @param length the maximum space used on the LCD, eg: 16
    * @param option configures padding and alignment, eg: TextOption.Left
