@@ -258,8 +258,8 @@ namespace AdvancedModule {
         if (Val_map < 0) { Val_map = 0 }
         return Val_map
     }
-// Gas
-//----------------------------------------------------------------------------
+	// CO2 and TVOC Sensor (CS811)
+	//----------------------------------------------------------------------------
 	let TVOC_OK = true
 	/* CO2*/
     function indenvGasStatus(): number {
