@@ -257,7 +257,7 @@ namespace AdvancedModule {
     * Read estimated CO2
     */
 	//% group="Gas"
-    //% blockId="indenvgeteCO2" block="Value of CO2"
+    //% blockId="indenvgeteCO2" block="Value of CCS811 CO2 sensor"
 	//% weight=50
     export function indenvgeteCO2(): number {
 
