@@ -259,7 +259,7 @@ namespace AdvancedModule {
         return Val_map
     }
 	
-	// CO2 and TVOC Sensor (CS811)
+	// CO2 and TVOC Sensor (CCS811)
 	//----------------------------------------------------------------------------
 	let TVOC_OK = true
 	/* CO2*/
@@ -289,10 +289,10 @@ namespace AdvancedModule {
         return true
     }
 	/**
-    * CO2 and TVOC Sensor (CS811) Start
+    * CO2 and TVOC Sensor (CCS811) Start
     */
     //% blockId="indenvStart" block="CCS811 Start"
-	//% group="CO2 and TVOC Sensor (CS811)"
+	//% group="CO2 and TVOC Sensor (CCS811)"
     //% weight=40
     export function indenvStart(): void {
         TVOC_OK = true
@@ -331,7 +331,7 @@ namespace AdvancedModule {
      * Set TVOC and CO2 baseline (Baseline should be a decimal value)
      * @param value  , eg: 33915
      */
-	//% group="CO2 and TVOC Sensor (CS811)"
+	//% group="CO2 and TVOC Sensor (CCS811)"
     //% blockId=CCS811_setBaseline block="set CO2 and TVOC baseline|%value value"
 	//% weight=39
 	export function setBaseline(value: number): void {
@@ -345,7 +345,7 @@ namespace AdvancedModule {
 	/**
     * Read estimated CO2
     */
-	//% group="CO2 and TVOC Sensor (CS811)"
+	//% group="CO2 and TVOC Sensor (CCS811)"
     //% blockId="indenvgeteCO2" block="Value of CO2"
 	//% weight=38
     export function indenvgeteCO2(): number {
@@ -370,7 +370,7 @@ namespace AdvancedModule {
 	/**
     * Read Total VOC
     */
-	//% group="CO2 and TVOC Sensor (CS811)"
+	//% group="CO2 and TVOC Sensor (CCS811)"
     //% blockId="indenvgetTVOC" block="Value of TVOC"
 	//% weight=37
     export function indenvgetTVOC(): number {
