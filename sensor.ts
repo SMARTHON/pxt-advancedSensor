@@ -200,10 +200,10 @@ namespace AdvancedModule {
         return pm25;
     }
 	/**
-    * Gas sensor Start
+    * CO2 and TVOC Sensor (CS811) Start
     */
     //% blockId="indenvStart" block="CCS811 Start"
-	//% group="Gas"
+	//% group="CO2 and TVOC Sensor (CS811)"
     //% weight=52
     export function indenvStart(): void {
         TVOC_OK = true
@@ -242,8 +242,8 @@ namespace AdvancedModule {
      * Set TVOC and CO2 baseline (Baseline should be a decimal value)
      * @param value  , eg: 33915
      */
-	//% group="Gas"
-    //% blockId=CCS811_setBaseline block="set CO2 baseline|%value value"
+	//% group="CO2 and TVOC Sensor (CS811)"
+    //% blockId=CCS811_setBaseline block="set CO2 and TVOC baseline|%value value"
 	//% weight=51
 	export function setBaseline(value: number): void {
         let buffer: Buffer = pins.createBuffer(3);
@@ -256,8 +256,8 @@ namespace AdvancedModule {
 	/**
     * Read estimated CO2
     */
-	//% group="Gas"
-    //% blockId="indenvgeteCO2" block="Value of CCS811 CO2 sensor"
+	//% group="CO2 and TVOC Sensor (CS811)"
+    //% blockId="indenvgeteCO2" block="Value of CO2"
 	//% weight=50
     export function indenvgeteCO2(): number {
 
@@ -277,6 +277,31 @@ namespace AdvancedModule {
         pins.i2cWriteNumber(90, 2, NumberFormat.UInt8LE, true)
         //basic.pause(200)
         return pins.i2cReadNumber(90, NumberFormat.UInt16BE, false)
+    }
+	/**
+    * Read Total VOC
+    */
+	//% group="CO2 and TVOC Sensor (CS811)"
+    //% blockId="indenvgetTVOC" block="Value of TVOC"
+	//% weight=49
+    export function indenvgetTVOC(): number {
+
+        let i
+
+        i = 0
+
+        while (indenvGasReady() != true) {
+            basic.pause(200)
+            i = i + 1
+            if (i >= 10)
+                return -1;
+        }
+        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
+        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
+        //basic.pause(200)
+        pins.i2cWriteNumber(90, 2, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        return (pins.i2cReadNumber(90, NumberFormat.UInt32BE, false) % 65536)
     }
 
     /**
