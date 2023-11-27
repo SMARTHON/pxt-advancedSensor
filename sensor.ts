@@ -258,6 +258,7 @@ namespace AdvancedModule {
         if (Val_map < 0) { Val_map = 0 }
         return Val_map
     }
+	
 	// CO2 and TVOC Sensor (CS811)
 	//----------------------------------------------------------------------------
 	let TVOC_OK = true
@@ -292,7 +293,7 @@ namespace AdvancedModule {
     */
     //% blockId="indenvStart" block="CCS811 Start"
 	//% group="CO2 and TVOC Sensor (CS811)"
-    //% weight=52
+    //% weight=40
     export function indenvStart(): void {
         TVOC_OK = true
         //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
@@ -332,7 +333,7 @@ namespace AdvancedModule {
      */
 	//% group="CO2 and TVOC Sensor (CS811)"
     //% blockId=CCS811_setBaseline block="set CO2 and TVOC baseline|%value value"
-	//% weight=51
+	//% weight=39
 	export function setBaseline(value: number): void {
         let buffer: Buffer = pins.createBuffer(3);
         buffer[0] = 0x20;
@@ -346,7 +347,7 @@ namespace AdvancedModule {
     */
 	//% group="CO2 and TVOC Sensor (CS811)"
     //% blockId="indenvgeteCO2" block="Value of CO2"
-	//% weight=50
+	//% weight=38
     export function indenvgeteCO2(): number {
 
         let i
@@ -371,7 +372,7 @@ namespace AdvancedModule {
     */
 	//% group="CO2 and TVOC Sensor (CS811)"
     //% blockId="indenvgetTVOC" block="Value of TVOC"
-	//% weight=49
+	//% weight=37
     export function indenvgetTVOC(): number {
 
         let i
