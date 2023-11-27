@@ -30,8 +30,7 @@ namespace AdvancedModule {
         133, 129, 126, 122, 119,   //  75  -  79
         115, 112, 109, 106, 103,   //  80  -  84
         100
-    ]
-	let TVOC_OK = true
+    ]	
 
     // Water 
     //---------------------------------------------------------------------
@@ -117,32 +116,7 @@ namespace AdvancedModule {
     }
 
 
-	/* CO2*/
-    function indenvGasStatus(): number {
-        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
-        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
-        //basic.pause(200)
-        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
-        //basic.pause(200)
-        let GasStatus = pins.i2cReadNumber(90, NumberFormat.UInt8LE, false)
-        //basic.pause(200)
-        return GasStatus
-    }
-
-    function indenvGasReady(): boolean {
-        if (TVOC_OK != true) {
-            return false
-        }
-        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
-        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
-        //basic.pause(200)
-        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
-        //basic.pause(200)
-        if ((pins.i2cReadNumber(90, NumberFormat.UInt8LE, false) % 16) != 8) {
-            return false
-        }
-        return true
-    }
+	
 	
     // Gas
     //----------------------------------------------------------------------------
@@ -198,6 +172,120 @@ namespace AdvancedModule {
         //Since the the formula P(ug/m3)=1000*(TH)/(TH+TL)
         //TH+TL assume is 1000ms, so P=1000*TH/1000=TH
         return pm25;
+    }
+	
+
+    /**
+     * get CO value
+     * @param MQ7pin describe parameter here, eg: AnalogPin.P0
+     */
+    //% group="Gas"  
+    //% blockId="readCOValue" block="value of MQ7 CO sensor at pin %MQ7pin"
+    //% weight=55
+    export function ReadCOValue(MQ7pin: AnalogPin): number {
+        let Val = pins.analogReadPin(MQ7pin)
+        let Val_map = pins.map(Val, 300, 1023, 0, 100)
+        if(Val_map<0){Val_map=0}
+        return Val_map
+    }
+
+    /**
+       * get Smoke value
+       * @param MQ2pin describe parameter here, eg: AnalogPin.P0
+       */
+    //% group="Gas"  
+    //% blockId="readSmokeValue" block="value of MQ2 Smoke sensor at pin %MQ2pin"
+    //% weight=58
+	//% blockHidden=true
+    export function ReadSmokeValue(MQ2pin: AnalogPin): number {
+        let Val = pins.analogReadPin(MQ2pin)
+        let Val_map = pins.map(Val, 30, 1023, 0, 100)
+        if (Val_map < 0) { Val_map = 0 }
+        return Val_map
+    }
+
+    /**
+       * get Alcohol value
+       * @param MQ3pin describe parameter here, eg: AnalogPin.P0
+       */
+    //% group="Gas"  
+    //% blockId="readAlcoholValue" block="value of MQ3 Alcohol sensor at pin %MQ3pin"
+    //% weight=57
+    export function ReadAlcoholValue(MQ3pin: AnalogPin): number {
+        let Val = pins.analogReadPin(MQ3pin)
+        let Val_map = pins.map(Val, 320, 1023, 0, 100)
+        if (Val_map < 0) { Val_map = 0 }
+        return Val_map
+    }
+    /**
+    * get Towngas value
+    * @param MQ5pin describe parameter here, eg: AnalogPin.P0
+    */
+    //% group="Gas"  
+    //% blockId="readTownGasValue" block="value of MQ5 Town Gas sensor at pin %MQ5pin"
+    //% weight=56
+    export function ReadTownGasValue(MQ5pin: AnalogPin): number {
+        let Val = pins.analogReadPin(MQ5pin)
+        let Val_map = pins.map(Val, 80, 1023, 0, 100)
+        if (Val_map < 0) { Val_map = 0 }
+        return Val_map
+    }
+
+    /**
+   * get Hydrogen value
+   * @param MQ8pin describe parameter here, eg: AnalogPin.P0
+   */
+    //% group="Gas"  
+    //% blockId="readHydrogenValue" block="value of MQ8 Hydrogen sensor at pin %MQ8pin"
+    //% weight=54
+    export function ReadHydrogenValue(MQ8pin: AnalogPin): number {
+        let Val = pins.analogReadPin(MQ8pin)
+        let Val_map = pins.map(Val, 120, 1023, 0, 100)
+        if (Val_map < 0) { Val_map = 0 }
+        return Val_map
+    }
+
+    /**
+      * get Air Quality value
+      * @param MQ135pin describe parameter here, eg: AnalogPin.P0
+      */
+    //% group="Gas"  
+    //% blockId="readAirQualityValue" block="value of MQ135 Air Quality sensor at pin %MQ135pin"
+    //% weight=53
+    export function ReadAirQualityValue(MQ135pin: AnalogPin): number {
+        let Val = pins.analogReadPin(MQ135pin)
+        let Val_map = pins.map(Val, 55, 1023, 0, 100)
+        if (Val_map < 0) { Val_map = 0 }
+        return Val_map
+    }
+// Gas
+//----------------------------------------------------------------------------
+	let TVOC_OK = true
+	/* CO2*/
+    function indenvGasStatus(): number {
+        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
+        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
+        //basic.pause(200)
+        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        let GasStatus = pins.i2cReadNumber(90, NumberFormat.UInt8LE, false)
+        //basic.pause(200)
+        return GasStatus
+    }
+
+    function indenvGasReady(): boolean {
+        if (TVOC_OK != true) {
+            return false
+        }
+        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
+        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
+        //basic.pause(200)
+        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        if ((pins.i2cReadNumber(90, NumberFormat.UInt8LE, false) % 16) != 8) {
+            return false
+        }
+        return true
     }
 	/**
     * CO2 and TVOC Sensor (CS811) Start
@@ -303,91 +391,7 @@ namespace AdvancedModule {
         //basic.pause(200)
         return (pins.i2cReadNumber(90, NumberFormat.UInt32BE, false) % 65536)
     }
-
-    /**
-     * get CO value
-     * @param MQ7pin describe parameter here, eg: AnalogPin.P0
-     */
-    //% group="Gas"  
-    //% blockId="readCOValue" block="value of MQ7 CO sensor at pin %MQ7pin"
-    //% weight=55
-    export function ReadCOValue(MQ7pin: AnalogPin): number {
-        let Val = pins.analogReadPin(MQ7pin)
-        let Val_map = pins.map(Val, 300, 1023, 0, 100)
-        if(Val_map<0){Val_map=0}
-        return Val_map
-    }
-
-    /**
-       * get Smoke value
-       * @param MQ2pin describe parameter here, eg: AnalogPin.P0
-       */
-    //% group="Gas"  
-    //% blockId="readSmokeValue" block="value of MQ2 Smoke sensor at pin %MQ2pin"
-    //% weight=58
-	//% blockHidden=true
-    export function ReadSmokeValue(MQ2pin: AnalogPin): number {
-        let Val = pins.analogReadPin(MQ2pin)
-        let Val_map = pins.map(Val, 30, 1023, 0, 100)
-        if (Val_map < 0) { Val_map = 0 }
-        return Val_map
-    }
-
-    /**
-       * get Alcohol value
-       * @param MQ3pin describe parameter here, eg: AnalogPin.P0
-       */
-    //% group="Gas"  
-    //% blockId="readAlcoholValue" block="value of MQ3 Alcohol sensor at pin %MQ3pin"
-    //% weight=57
-    export function ReadAlcoholValue(MQ3pin: AnalogPin): number {
-        let Val = pins.analogReadPin(MQ3pin)
-        let Val_map = pins.map(Val, 320, 1023, 0, 100)
-        if (Val_map < 0) { Val_map = 0 }
-        return Val_map
-    }
-    /**
-    * get Towngas value
-    * @param MQ5pin describe parameter here, eg: AnalogPin.P0
-    */
-    //% group="Gas"  
-    //% blockId="readTownGasValue" block="value of MQ5 Town Gas sensor at pin %MQ5pin"
-    //% weight=56
-    export function ReadTownGasValue(MQ5pin: AnalogPin): number {
-        let Val = pins.analogReadPin(MQ5pin)
-        let Val_map = pins.map(Val, 80, 1023, 0, 100)
-        if (Val_map < 0) { Val_map = 0 }
-        return Val_map
-    }
-
-    /**
-   * get Hydrogen value
-   * @param MQ8pin describe parameter here, eg: AnalogPin.P0
-   */
-    //% group="Gas"  
-    //% blockId="readHydrogenValue" block="value of MQ8 Hydrogen sensor at pin %MQ8pin"
-    //% weight=54
-    export function ReadHydrogenValue(MQ8pin: AnalogPin): number {
-        let Val = pins.analogReadPin(MQ8pin)
-        let Val_map = pins.map(Val, 120, 1023, 0, 100)
-        if (Val_map < 0) { Val_map = 0 }
-        return Val_map
-    }
-
-    /**
-      * get Air Quality value
-      * @param MQ135pin describe parameter here, eg: AnalogPin.P0
-      */
-    //% group="Gas"  
-    //% blockId="readAirQualityValue" block="value of MQ135 Air Quality sensor at pin %MQ135pin"
-    //% weight=53
-    export function ReadAirQualityValue(MQ135pin: AnalogPin): number {
-        let Val = pins.analogReadPin(MQ135pin)
-        let Val_map = pins.map(Val, 55, 1023, 0, 100)
-        if (Val_map < 0) { Val_map = 0 }
-        return Val_map
-    }
-
+	
 //TM1637
 //-------------------------------------------------------------------------
     let TubeTab: number [] = [
