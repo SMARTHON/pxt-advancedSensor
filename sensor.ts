@@ -31,6 +31,7 @@ namespace AdvancedModule {
         115, 112, 109, 106, 103,   //  80  -  84
         100
     ]
+	let TVOC_OK = true
 
     // Water 
     //---------------------------------------------------------------------
@@ -116,7 +117,33 @@ namespace AdvancedModule {
     }
 
 
+	/* CO2*/
+    function indenvGasStatus(): number {
+        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
+        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
+        //basic.pause(200)
+        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        let GasStatus = pins.i2cReadNumber(90, NumberFormat.UInt8LE, false)
+        //basic.pause(200)
+        return GasStatus
+    }
 
+    function indenvGasReady(): boolean {
+        if (TVOC_OK != true) {
+            return false
+        }
+        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
+        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
+        //basic.pause(200)
+        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        if ((pins.i2cReadNumber(90, NumberFormat.UInt8LE, false) % 16) != 8) {
+            return false
+        }
+        return true
+    }
+	
     // Gas
     //----------------------------------------------------------------------------
     /**
@@ -172,18 +199,84 @@ namespace AdvancedModule {
         //TH+TL assume is 1000ms, so P=1000*TH/1000=TH
         return pm25;
     }
-
-    /**
-      * get CO2 value
-      * @param MG811pin describe parameter here, eg: AnalogPin.P0
-      */
-    //% group="Gas"  
-    //% blockId="readCO2Value" block="value of MG811 CO2 sensor at pin %MG811pin"
+	/**
+    * Gas sensor Start
+    */
+    //% blockId="indenvStart" block="CCS811 Start"
+	//% group="Gas"
     //% weight=52
-    export function ReadCO2Value(MG811pin: AnalogPin): number {
-        let Val = pins.analogReadPin(MG811pin)
-        let Val_map = pins.map(Val, 0, 1023, 0, 100)
-        return Val_map
+    export function indenvStart(): void {
+        TVOC_OK = true
+        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
+        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
+        //basic.pause(200)
+        //basic.pause(200)
+        /* CJMCU-8118 CCS811 addr 0x5A reg 0x20 Read Device ID = 0x81 */
+        pins.i2cWriteNumber(90, 32, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        if (pins.i2cReadNumber(90, NumberFormat.UInt8LE, false) != 129) {
+            TVOC_OK = false
+        }
+        basic.pause(200)
+        /* CJMCU-8118 AppStart CCS811 addr 0x5A register 0xF4 */
+        pins.i2cWriteNumber(90, 244, NumberFormat.UInt8LE, false)
+        //basic.pause(200)
+        /* CJMCU-8118 CCS811 Driving Mode 1 addr 0x5A register 0x01 0x0110 */
+        pins.i2cWriteNumber(90, 272, NumberFormat.UInt16BE, false)
+        basic.pause(200)
+        /* CJMCU-8118 CCS811 Status addr 0x5A register 0x00 return 1 byte */
+        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        if (pins.i2cReadNumber(90, NumberFormat.UInt8LE, false) % 2 != 0) {
+            TVOC_OK = false
+        }
+        basic.pause(200)
+        pins.i2cWriteNumber(90, 0, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        if (Math.idiv(pins.i2cReadNumber(90, NumberFormat.UInt8LE, false), 16) != 9) {
+            TVOC_OK = false
+        }
+        basic.pause(200)
+    }
+	/**
+     * Set TVOC and CO2 baseline (Baseline should be a decimal value)
+     * @param value  , eg: 33915
+     */
+	//% group="Gas"
+    //% blockId=CCS811_setBaseline block="set CO2 baseline|%value value"
+	//% weight=51
+	export function setBaseline(value: number): void {
+        let buffer: Buffer = pins.createBuffer(3);
+        buffer[0] = 0x20;
+        buffer[1] = value >> 8 & 0xff;
+        buffer[2] = value & 0xff;
+        pins.i2cWriteBuffer(90, buffer);
+
+    }
+	/**
+    * Read estimated CO2
+    */
+	//% group="Gas"
+    //% blockId="indenvgeteCO2" block="Value of CO2"
+	//% weight=50
+    export function indenvgeteCO2(): number {
+
+        let i
+
+        i = 0
+
+        while (indenvGasReady() != true) {
+            basic.pause(200)
+            i = i + 1
+            if (i >= 10)
+                return -1;
+        }
+        //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
+        //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
+        //basic.pause(200)
+        pins.i2cWriteNumber(90, 2, NumberFormat.UInt8LE, true)
+        //basic.pause(200)
+        return pins.i2cReadNumber(90, NumberFormat.UInt16BE, false)
     }
 
     /**
