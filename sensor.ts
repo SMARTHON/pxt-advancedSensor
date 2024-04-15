@@ -30,9 +30,9 @@ namespace AdvancedModule {
         133, 129, 126, 122, 119,   //  75  -  79
         115, 112, 109, 106, 103,   //  80  -  84
         100
-    ]	
+    ]
 
-    // Water 
+    // Water
     //---------------------------------------------------------------------
     /**
      * get NTC Temperature
@@ -98,7 +98,7 @@ namespace AdvancedModule {
     * get water level value (0~100)
     * @param waterlevelpin describe parameter here, eg: AnalogPin.P0
     */
-    //% group="Water"  
+    //% group="Water"
     //% blockId="readWaterLevel" block="value of water level(0~100) at pin %waterlevelpin"
     //% weight=100
     export function ReadWaterLevel(waterlevelpin: AnalogPin): number {
@@ -116,8 +116,8 @@ namespace AdvancedModule {
     }
 
 
-	
-	
+
+
     // Gas
     //----------------------------------------------------------------------------
     /**
@@ -125,7 +125,7 @@ namespace AdvancedModule {
    * @param ledpin describe parameter here, eg: AnalogPin.P1
    * @param dustpin describe parameter here, eg: AnalogPin.P0
    */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readDustValue" block="value of Dust sensor at LEDpin %ledpin Dustpin %dustpin"
     //% weight=60
     export function ReadDustValue(ledpin:DigitalPin, dustpin: AnalogPin): number {
@@ -155,7 +155,7 @@ namespace AdvancedModule {
       * get PM2.5 value
       * @param PM25pin describe parameter here, eg: AnalogPin.P0
       */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readPM25Value" block="value of PM2.5 sensor at pin %PM25pin"
     //% weight=59
     export function ReadPM25Value(PM25pin: DigitalPin): number {
@@ -173,13 +173,13 @@ namespace AdvancedModule {
         //TH+TL assume is 1000ms, so P=1000*TH/1000=TH
         return pm25;
     }
-	
+
 
     /**
      * get CO value
      * @param MQ7pin describe parameter here, eg: AnalogPin.P0
      */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readCOValue" block="value of MQ7 CO sensor at pin %MQ7pin"
     //% weight=55
     export function ReadCOValue(MQ7pin: AnalogPin): number {
@@ -193,7 +193,7 @@ namespace AdvancedModule {
        * get Smoke value
        * @param MQ2pin describe parameter here, eg: AnalogPin.P0
        */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readSmokeValue" block="value of MQ2 Smoke sensor at pin %MQ2pin"
     //% weight=58
 	//% blockHidden=true
@@ -208,7 +208,7 @@ namespace AdvancedModule {
        * get Alcohol value
        * @param MQ3pin describe parameter here, eg: AnalogPin.P0
        */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readAlcoholValue" block="value of MQ3 Alcohol sensor at pin %MQ3pin"
     //% weight=57
     export function ReadAlcoholValue(MQ3pin: AnalogPin): number {
@@ -221,7 +221,7 @@ namespace AdvancedModule {
     * get Towngas value
     * @param MQ5pin describe parameter here, eg: AnalogPin.P0
     */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readTownGasValue" block="value of MQ5 Town Gas sensor at pin %MQ5pin"
     //% weight=56
     export function ReadTownGasValue(MQ5pin: AnalogPin): number {
@@ -235,7 +235,7 @@ namespace AdvancedModule {
    * get Hydrogen value
    * @param MQ8pin describe parameter here, eg: AnalogPin.P0
    */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readHydrogenValue" block="value of MQ8 Hydrogen sensor at pin %MQ8pin"
     //% weight=54
     export function ReadHydrogenValue(MQ8pin: AnalogPin): number {
@@ -249,7 +249,7 @@ namespace AdvancedModule {
       * get Air Quality value
       * @param MQ135pin describe parameter here, eg: AnalogPin.P0
       */
-    //% group="Gas"  
+    //% group="Gas"
     //% blockId="readAirQualityValue" block="value of MQ135 Air Quality sensor at pin %MQ135pin"
     //% weight=53
     export function ReadAirQualityValue(MQ135pin: AnalogPin): number {
@@ -258,7 +258,7 @@ namespace AdvancedModule {
         if (Val_map < 0) { Val_map = 0 }
         return Val_map
     }
-	
+
 	// CO2 and TVOC Sensor (CCS811)
 	//----------------------------------------------------------------------------
 	let TVOC_OK = true
@@ -392,7 +392,7 @@ namespace AdvancedModule {
         //basic.pause(200)
         return (pins.i2cReadNumber(90, NumberFormat.UInt32BE, false) % 65536)
     }
-	
+
 //TM1637
 //-------------------------------------------------------------------------
     let TubeTab: number [] = [
@@ -400,17 +400,17 @@ namespace AdvancedModule {
     0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71
 ];
     /**
-     * 
+     *
      */
     export class TM1637
     {
         clkPin: DigitalPin;
         dataPin: DigitalPin;
-        brightnessLevel: number;     
+        brightnessLevel: number;
         pointFlag: boolean;
         buf: Buffer;
 
-        private writeByte(wrData: number) 
+        private writeByte(wrData: number)
         {
             for(let i = 0; i < 8; i ++)
             {
@@ -420,12 +420,12 @@ namespace AdvancedModule {
                 wrData >>= 1;
                 pins.digitalWritePin(this.clkPin, 1);
             }
-            
+
             pins.digitalWritePin(this.clkPin, 0); // Wait for ACK
             pins.digitalWritePin(this.dataPin, 1);
             pins.digitalWritePin(this.clkPin, 1);
         }
-        
+
         private start()
         {
             pins.digitalWritePin(this.clkPin, 1);
@@ -433,7 +433,7 @@ namespace AdvancedModule {
             pins.digitalWritePin(this.dataPin, 0);
             pins.digitalWritePin(this.clkPin, 0);
         }
-        
+
         private stop()
         {
             pins.digitalWritePin(this.clkPin, 0);
@@ -441,19 +441,19 @@ namespace AdvancedModule {
             pins.digitalWritePin(this.clkPin, 1);
             pins.digitalWritePin(this.dataPin, 1);
         }
-        
+
         private coding(dispData: number): number
         {
             let pointData = 0;
-            
+
             if(this.pointFlag == true)pointData = 0x80;
             else if(this.pointFlag == false)pointData = 0;
-            
+
             if(dispData == 0x7f)dispData = 0x00 + pointData;
             else dispData = TubeTab[dispData] + pointData;
-            
+
             return dispData;
-        } 
+        }
 
         /**
          * Show a 4 digits number on display
@@ -464,7 +464,7 @@ namespace AdvancedModule {
         //% group="TM1637 4-Digit Display"
         //% subcategory=Display
         show(dispData: number)
-        {       
+        {
             let compare_01:number = dispData % 100;
             let compare_001:number = dispData % 1000;
 
@@ -473,7 +473,7 @@ namespace AdvancedModule {
                 this.bit(dispData, 3);
                 this.bit(0x7f, 2);
                 this.bit(0x7f, 1);
-                this.bit(0x7f, 0);                
+                this.bit(0x7f, 0);
             }
             else if(dispData < 100)
             {
@@ -483,7 +483,7 @@ namespace AdvancedModule {
                 } else{
                     this.bit(Math.floor(dispData / 10) % 10, 2);
                 }
-                
+
                 this.bit(0x7f, 1);
                 this.bit(0x7f, 0);
             }
@@ -521,7 +521,7 @@ namespace AdvancedModule {
                     this.bit(Math.floor(dispData / 1000) % 10, 0);
                 }
             }
-            else 
+            else
             {
                 this.bit(9, 3);
                 this.bit(9, 2);
@@ -529,7 +529,7 @@ namespace AdvancedModule {
                 this.bit(9, 0);
             }
         }
-        
+
         /**
          * Set the brightness level of display at from 0 to 7
          * @param level value of brightness light level
@@ -541,13 +541,13 @@ namespace AdvancedModule {
         set(level: number)
         {
             this.brightnessLevel = level;
-            
+
             this.bit(this.buf[0], 0x00);
             this.bit(this.buf[1], 0x01);
             this.bit(this.buf[2], 0x02);
             this.bit(this.buf[3], 0x03);
         }
-        
+
         /**
          * Show a single number from 0 to 9 at a specified digit of 4-Digit Display
          * @param dispData value of number
@@ -563,7 +563,7 @@ namespace AdvancedModule {
             if((dispData == 0x7f) || ((dispData <= 9) && (bitAddr <= 3)))
             {
                 let segData = 0;
-                
+
                 segData = this.coding(dispData);
                 this.start();
                 this.writeByte(0x44);
@@ -575,11 +575,11 @@ namespace AdvancedModule {
                 this.start();
                 this.writeByte(0x88 + this.brightnessLevel);
                 this.stop();
-                
+
                 this.buf[bitAddr] = dispData;
             }
         }
-        
+
         /**
          * Turn on or off the colon point on 4-Digit Display
          * @param pointEn value of point switch
@@ -590,13 +590,13 @@ namespace AdvancedModule {
         point(point: boolean)
         {
             this.pointFlag = point;
-            
+
             this.bit(this.buf[0], 0x00);
             this.bit(this.buf[1], 0x01);
             this.bit(this.buf[2], 0x02);
             this.bit(this.buf[3], 0x03);
         }
-        
+
         /**
          * Clear the display
          */
@@ -624,14 +624,14 @@ namespace AdvancedModule {
     export function createDisplay(clkPin: DigitalPin, dataPin: DigitalPin): TM1637
     {
         let display = new TM1637();
-        
+
         display.buf = pins.createBuffer(4);
         display.clkPin = clkPin;
         display.dataPin = dataPin;
         display.brightnessLevel = 0;
         display.pointFlag = false;
         display.clear();
-        
+
         return display;
     }
 
@@ -719,7 +719,9 @@ export enum TextAlignment {
   //% block="left-aligned"
   Left,
   //% block="right-aligned"
-  Right
+  Right,
+  //% block="center-aligned"
+  Center
 }
 
 export enum TextOption {
@@ -727,8 +729,8 @@ export enum TextOption {
   AlignLeft,
   //% block="align right"
   AlignRight,
-  //% block="pad with zeros"
-  PadWithZeros
+  //% block="align center"
+  AlignCenter
 }
 
 
@@ -855,14 +857,21 @@ export enum TextOption {
     let lcdPos = offset;
 
     // Add padding at the beginning
-    if (alignment == TextAlignment.Right) {
-      while (lcdPos < endPosition - text.length) {
-        if (lcdState.characters[lcdPos] != fillCharacter) {
-          lcdState.characters[lcdPos] = fillCharacter;
-          lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
-        }
-        lcdPos++;
+    let paddingEnd = offset;
+
+    if (alignment === TextAlignment.Right) {
+      paddingEnd = endPosition - text.length;
+    }
+    else if (alignment === TextAlignment.Center) {
+      paddingEnd = offset + Math.idiv(endPosition - offset - text.length, 2);
+    }
+
+    while (lcdPos < paddingEnd) {
+      if (lcdState.characters[lcdPos] != fillCharacter) {
+        lcdState.characters[lcdPos] = fillCharacter;
+        lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
       }
+      lcdPos++;
     }
 
     // Copy the text
@@ -911,25 +920,19 @@ export enum TextOption {
 
   function toAlignment(option?: TextOption): TextAlignment {
     if (
-      option === TextOption.AlignRight ||
-      option === TextOption.PadWithZeros
+      option === TextOption.AlignRight
     ) {
       return TextAlignment.Right;
+    } else if (option === TextOption.AlignCenter) {
+      return TextAlignment.Center;
     } else {
       return TextAlignment.Left;
     }
   }
 
-  function toPad(option?: TextOption): string {
-    if (option === TextOption.PadWithZeros) {
-      return "0";
-    } else {
-      return " ";
-    }
-  }
 
- 
- 
+
+
 
  /**
    * Displays a text on a LCD1602 in the given position range.
@@ -938,7 +941,7 @@ export enum TextOption {
    * @param text the text to show, eg: "Smarthon"
    * @param startPosition the start position on the LCD, [1 - 32]
    * @param length the maximum space used on the LCD, eg: 16
-   * @param option configures padding and alignment, eg: TextOption.Left
+   * @param option configures alignment, eg: TextOption.Left
    */
   //% subcategory=Display
   //% blockId="lcd_show_string_on_1602"
@@ -962,7 +965,7 @@ export enum TextOption {
       16,
       2,
       toAlignment(option),
-      toPad(option)
+      " "
     );
   }
 
@@ -1013,7 +1016,7 @@ export enum TextOption {
     send(Lcd.Command, 0);
   }
 
-  
+
 
   /**
    * Connects to the LCD at a given I2C address.
