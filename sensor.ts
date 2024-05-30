@@ -151,29 +151,6 @@ namespace AdvancedModule {
 
     }
 
-    /**
-      * get PM2.5 value
-      * @param PM25pin describe parameter here, eg: AnalogPin.P0
-      */
-    //% group="Gas"
-    //% blockId="readPM25Value" block="value of PM2.5 sensor at pin %PM25pin"
-    //% weight=59
-    export function ReadPM25Value(PM25pin: DigitalPin): number {
-        let pm25 = 0
-        while (pins.digitalReadPin(PM25pin) != 0) {
-        }//low
-        while (pins.digitalReadPin(PM25pin) != 1) {
-        }//high
-        pm25 = input.runningTime()//start TimeHigh
-        while (pins.digitalReadPin(PM25pin) != 0) {
-        }//low
-        pm25 = input.runningTime() - pm25   //End TimeHigh
-        //now var pm25 = TH
-        //Since the the formula P(ug/m3)=1000*(TH)/(TH+TL)
-        //TH+TL assume is 1000ms, so P=1000*TH/1000=TH
-        return pm25;
-    }
-
 
     /**
      * get CO value
@@ -392,6 +369,44 @@ namespace AdvancedModule {
         //basic.pause(200)
         return (pins.i2cReadNumber(90, NumberFormat.UInt32BE, false) % 65536)
     }
+
+
+//Laser Dust Sensor (FS00202)
+//-------------------------------------------------------------------------
+
+    export enum PmMenu {
+        //% block="PM1.0"
+        PM1 = 0,
+        //% block="PM2.5"
+        PM25 = 1,
+        //% block="PM10"
+        PM10 = 2
+    }
+
+    const PM_ADDR = 0x50; // sensor I2C address
+
+    /**
+      * Read PM1.0, PM2.5 & PM10
+      */
+    //% group="Laser Dust Sensor (FS00202)"
+    //% blockId="readLaserDustSensor" //% block="Get %pmType (ug/m3) at I2C"
+    //% weight=15
+    export function PMdata(pmType: PmMenu): number {
+        pins.i2cWriteNumber(PM_ADDR, 0x00, NumberFormat.Int8LE);
+        let buffer = pins.i2cReadBuffer(PM_ADDR, 32);
+        let sum = 0
+        for (let i = 0; i < 30; i++) {
+            sum += buffer[i]
+        }
+        let data = [-1, -1, -1]
+        if (sum == ((buffer[30] << 8) | buffer[31])) {
+          data[0] = Math.round(((buffer[0x04] << 8) | buffer[0x05]) / 2.002 )
+          data[1] = Math.round(((buffer[0x06] << 8) | buffer[0x07]) / 2.093 )
+          data[2] = Math.round(((buffer[0x08] << 8) | buffer[0x09]) / 1.841 )
+        }
+        return data[pmType]
+    }
+
 
 //TM1637
 //-------------------------------------------------------------------------
