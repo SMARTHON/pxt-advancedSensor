@@ -1109,6 +1109,7 @@ export enum TextOption {
   export function isLcdConnected(): boolean {
     return !!lcdState || connect();
   }
+  //
 	/**
 	 * IR detector block
 	 */
