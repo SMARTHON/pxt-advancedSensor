@@ -1109,13 +1109,11 @@ export enum TextOption {
   export function isLcdConnected(): boolean {
     return !!lcdState || connect();
   }
-    //% blockId="smarthon_IR_detector"
-    //% block="Object detected at %pin"
-
-    export function IRdetection(pin: DigitalPin): boolean {
-        if (pins.digitalReadPin(pin) == 0)
-            return false;
-        else return true;
-    }
+  
+  export function IRdetection(pin: DigitalPin): boolean {
+    if (pins.digitalReadPin(pin) == 0)
+        return false;
+    else return true;
+}
 
 }
