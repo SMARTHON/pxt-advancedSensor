@@ -1109,6 +1109,11 @@ export enum TextOption {
   export function isLcdConnected(): boolean {
     return !!lcdState || connect();
   }
-
+  
+  export function IRdetection(pin: DigitalPin): boolean {
+    if (pins.digitalReadPin(pin) == 0)
+        return false;
+    else return true;
+}
 
 }
