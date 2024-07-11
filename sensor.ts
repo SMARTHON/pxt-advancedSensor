@@ -1109,17 +1109,15 @@ export enum TextOption {
   export function isLcdConnected(): boolean {
     return !!lcdState || connect();
   }
-  //
-	/**
-	 * IR detector block
-	 */
-    //% blockId="smarthon_IR_detector"
-    //% block="Object detected at %pin"
-	//% group="IR sensor"
-	//% subcategory=Display
-	//% weight=999 color=#3CB371 icon="" block="IR detector"
+  
+//IR Sensor 
 
-    export function IRdetection(pin: DigitalPin): boolean {
+//% blockId="smarthon_IR_detector"
+//% block="Object detected at %pin"
+//% group="IR sensor"
+//% subcategory=Display
+
+export function IRdetection(pin: DigitalPin): boolean {
         if (pins.digitalReadPin(pin) == 0)
             return false;
         else return true;
