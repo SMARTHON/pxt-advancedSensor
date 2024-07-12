@@ -1115,7 +1115,7 @@ export enum TextOption {
   //% block="Object detected at %pin"
   //% weight=70
   //% group="IR sensor"
-  //% subcategory=Display
+  //% subcategory=transport
 
   export function IRdetection(pin: DigitalPin): boolean {
 	if (pins.digitalReadPin(pin) == 0)
