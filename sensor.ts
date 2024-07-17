@@ -1122,8 +1122,8 @@ export enum TextOption {
 	//% block="Get battery level (percentage) at Pin %pin"
   
 	export function getBattery(pin: AnalogPin): number {
-		let max = 660;   // define the max reading from battery
-		let min = 560;   // define the min reading from battery
+		let max = 1023;   // define the max reading from battery
+		let min = 706;   // define the min reading from battery
 		let sum = 0;
 
 		//  read 30 times to get the average
