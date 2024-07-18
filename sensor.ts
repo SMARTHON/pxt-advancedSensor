@@ -1129,5 +1129,37 @@ export function IRdetection(pin: DigitalPin): boolean {
 	else return true;
 }
 
-}
 
+//Laser 
+//-----------------------------------------------------
+
+
+    /**
+     * det
+     */
+    //% blockId="smarthon_Laser"
+    //% block="receiver at %receiver receive laser"
+    //% weight=2
+	//%group="Laser"
+	//% subcategory="Transport"
+
+    export function Laser(receiver: DigitalPin): boolean {
+        if (pins.digitalReadPin(receiver))
+            return true;
+        else return false;
+    }
+	
+	//% blockId="turn_on/off_laser"
+	//% block="Turn the laser sender on |intensity| at %pin"
+	//%weight=30
+	//%group="Laser"
+	//% subcategory="Transport"
+	
+	export function turn_laser(intensity: number, pin: DigitalPin): void{
+		pins.digitalWritePin(pin, intensity)
+		}
+	
+	
+	
+	
+}
