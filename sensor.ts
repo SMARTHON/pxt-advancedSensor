@@ -392,6 +392,7 @@ namespace AdvancedModule {
     /**
       * Read PM1.0, PM2.5 & PM10
       */
+	  
     //% group="Laser Dust Sensor (FS00202)"
 	//% subcategory="Environment"
     //% blockId="readLaserDustSensor" //% block="Get %pmType (ug/m3) at I2C"
