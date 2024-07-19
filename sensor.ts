@@ -1151,7 +1151,7 @@ export function IRdetection(pin: DigitalPin): boolean {
 	
     
     //% blockId="turn_on/off_laser"
-    //% block="Turn the laser to |%intensity| at %pin"
+    //% block="Turn the laser to |%state| at %pin"
     //% weight=30
     //% group="Laser"
     //% subcategory="Transport"
