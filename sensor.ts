@@ -1117,7 +1117,7 @@ export enum TextOption {
   
 
 //% blockId="smarthon_IR_detector"
-//% block="Object detected at %pin"
+//% block="Get IR Sensor (object detected or not) at %pin"
 //% weight=70
 //% group="IR Sensor"
 //% subcategory=Transport
