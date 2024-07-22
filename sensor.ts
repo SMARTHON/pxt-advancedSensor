@@ -1138,7 +1138,7 @@ export function IRdetection(pin: DigitalPin): boolean {
      * det
      */
     //% blockId="smarthon_Laser"
-    //% block="receiver at %receiver receive laser"
+    //% block="Get receiver (laser received or not) at %receiver"
     //% weight=2
 	//%group="Laser"
 	//% subcategory="Transport"
