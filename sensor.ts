@@ -54,6 +54,7 @@ namespace AdvancedModule {
     //% blockId="readPH"
     //% block="Read PH value at %pin"
     //% weight=80 group="Water"
+	//% subcategory="Science"
     export function readPH(pin: AnalogPin): string {
         let sensorarray: number[] = []
         for (let i = 0; i < 10; i++) {
@@ -78,6 +79,7 @@ namespace AdvancedModule {
     //% blockId="readPHNumber"
     //% block="Read PH value (x100) pin %ports| offset %offset"
     //% weight=70 group="Water"
+	//% subcategory="Science"
     export function readPhNumber(ports: AnalogPin, offset: number): number {
 
         let temp = 0;
@@ -544,6 +546,8 @@ namespace AdvancedModule {
   //% group="Temperature, Humidity and Pressure Sensor (BME280)"
   //% blockId="BME280value" block="value of BME280 %state"
   //% weight=20
+  //% subcategory="Science"
+  
   export function octopus_BME280(state: BME280_state): number {
       switch (state) {
           case 0:
