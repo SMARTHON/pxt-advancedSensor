@@ -1302,7 +1302,7 @@ export enum TextOption {
     //%block="Create CSV File Header* |field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5"
 	//%subcategory=SD Card
     //% weight=139
-	export function SetHeader (field1: string, field2: string, field3: string, field4: string, field5: string): void{
+	export function SetHeader (field1: number, field2: number, field3: number, field4: number, field5: number): void{
 		if (field1 != null && field2 != null && field3 != null && field4 != null && field5 != null) {
             let header = field1 + ',' + field2 + ',' + field3 + ',' + field4 + ',' + field5
 				serial.writeLine(header)
@@ -1334,7 +1334,7 @@ export enum TextOption {
     //%block="Log the data to CSV File* |field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5"
 	//%subcategory=SD Card
     //% weight=138
-	export function SetRow (field1: string, field2: string, field3: string, field4: string, field5: string) :void {
+	export function SetRow (field1: number, field2: number, field3: number, field4: number, field5: number) :void {
 		if (field1 != null && field2 != null && field3 != null && field4 != null && field5 != null) {
             let row = field1 + ',' + field2 + ',' + field3 + ',' + field4 + ',' + field5
 				serial.writeLine(row)
