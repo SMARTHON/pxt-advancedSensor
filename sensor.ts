@@ -1287,80 +1287,80 @@ export enum TextOption {
 	
 //SD Card
 //-----------------------------------------
-    //%blockId= InitializeSDcard
-    //%block="Initialize SD Card TX %tx_pin RX %rx_pin"
+  //%blockId= InitializeSDcard
+  //%block="Initialize SD Card TX %tx_pin RX %rx_pin"
 	//%subcategory=SD Card
-    //% weight=140
+  //% weight=140
 
-    export function InitializeSDcard(tx_pin: SerialPin, rx_pin: SerialPin): void {
-        serial.redirect(tx_pin, rx_pin, BaudRate.BaudRate9600);
-        serial.setTxBufferSize(128)
-        serial.setRxBufferSize(128)	
+  export function InitializeSDcard(tx_pin: SerialPin, rx_pin: SerialPin): void {
+    serial.redirect(tx_pin, rx_pin, BaudRate.BaudRate9600);
+    serial.setTxBufferSize(128)
+    serial.setRxBufferSize(128)	
 	}
 	
 	//%blockId= SetHeader
-    //%block="Create CSV File Header* |field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5"
-	//%subcategory=SD Card
-    //% weight=139
-	export function SetHeader (field1: number, field2: number, field3: number, field4: number, field5: number): void{
-		if (field1 != null && field2 != null && field3 != null && field4 != null && field5 != null) {
-            let header = field1 + ',' + field2 + ',' + field3 + ',' + field4 + ',' + field5
-				serial.writeLine(header)
-        }
-		else if (field1 != null && field2 != null && field3 != null && field4 != null && field5 == null) {
-            let header = field1 + field2 + ',' + field3 + ',' + field4
-				serial.writeLine(header)
-        }
-		else if (field1 != null && field2 != null && field3 != null && field4 == null && field5 == null) {
-            let header = field1 + field2 + ',' + field3
-				serial.writeLine(header)
-        }
-		else if (field1 != null && field2 != null && field3 == null && field4 == null && field5 == null) {
-            let header = field1 + field2
-				serial.writeLine(header)
-		}
-		else if (field1 != null && field2 == null && field3 == null && field4 == null && field5 == null) {
-            let header = field1
-				serial.writeLine(header)
-		}
-		else if (field1 == null && field2 == null && field3 == null && field4 == null && field5 == null) {
-            let header = null
-				serial.writeLine(header)
-        }
-	
-    }		
-	
-	//%blockId= SetRow
+  //%block="Create CSV File Header* |field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5"
+  //%subcategory=SD Card
+  //% weight=139
+  export function SetHeader(field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null): void {
+      if (field1 != null && field2 != null && field3 != null && field4 != null && field5 != null) {
+          let header = field1 + ',' + field2 + ',' + field3 + ',' + field4 + ',' + field5
+          serial.writeLine(header)
+      }
+      else if (field1 != null && field2 != null && field3 != null && field4 != null && field5 == null) {
+          let header = field1 + ',' + field2 + ',' + field3 + ',' + field4
+          serial.writeLine(header)
+      }
+      else if (field1 != null && field2 != null && field3 != null && field4 == null && field5 == null) {
+          let header = field1 + ',' + field2 + ',' + field3
+          serial.writeLine(header)
+      }
+      else if (field1 != null && field2 != null && field3 == null && field4 == null && field5 == null) {
+          let header = field1 + ',' + field2
+          serial.writeLine(header)
+      }
+      else if (field1 != null && field2 == null && field3 == null && field4 == null && field5 == null) {
+          let header = field1.toString()
+          serial.writeLine(header)
+      }
+      else if (field1 == null && field2 == null && field3 == null && field4 == null && field5 == null) {
+          let header = null
+          serial.writeLine(header)
+      }
+
+    }
+
+    //%blockId= SetRow
     //%block="Log the data to CSV File* |field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5"
-	//%subcategory=SD Card
+    //%subcategory=SD Card
     //% weight=138
-	export function SetRow (field1: number, field2: number, field3: number, field4: number, field5: number) :void {
-		if (field1 != null && field2 != null && field3 != null && field4 != null && field5 != null) {
+    export function SetRow(field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null): void {
+        if (field1 != null && field2 != null && field3 != null && field4 != null && field5 != null) {
             let row = field1 + ',' + field2 + ',' + field3 + ',' + field4 + ',' + field5
-				serial.writeLine(row)
+            serial.writeLine(row)
         }
-		else if (field1 != null && field2 != null && field3 != null && field4 != null && field5 == null) {
-            let row = field1 + field2 + ',' + field3 + ',' + field4
-				serial.writeLine(row)
+        else if (field1 != null && field2 != null && field3 != null && field4 != null && field5 == null) {
+            let row = field1 + ',' + field2 + ',' + field3 + ',' + field4
+            serial.writeLine(row)
         }
-		else if (field1 != null && field2 != null && field3 != null && field4 == null && field5 == null) {
-            let row = field1 + field2 + ',' + field3
-				serial.writeLine(row)
+        else if (field1 != null && field2 != null && field3 != null && field4 == null && field5 == null) {
+            let row = field1 + ',' + field2 + ',' + field3
+            serial.writeLine(row)
         }
-		else if (field1 != null && field2 != null && field3 == null && field4 == null && field5 == null) {
-            let row = field1 + field2
-				serial.writeLine(row)
-		}
-		else if (field1 != null && field2 == null && field3 == null && field4 == null && field5 == null) {
-            let row = field1
-				serial.writeLine(row)
-		}
-		else if (field1 == null && field2 == null && field3 == null && field4 == null && field5 == null) {
+        else if (field1 != null && field2 != null && field3 == null && field4 == null && field5 == null) {
+            let row = field1 + ',' + field2
+            serial.writeLine(row)
+        }
+        else if (field1 != null && field2 == null && field3 == null && field4 == null && field5 == null) {
+            let row = field1.toString()
+            serial.writeLine(row)
+        }
+        else if (field1 == null && field2 == null && field3 == null && field4 == null && field5 == null) {
             let row = null
-				serial.writeLine(row)
+            serial.writeLine(row)
         }
 
-	}
+    }
 }
 
 
