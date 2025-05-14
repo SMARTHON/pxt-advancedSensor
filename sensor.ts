@@ -1287,6 +1287,12 @@ export enum TextOption {
 	
 //SD Card
 //-----------------------------------------
+
+  /**
+   * Init the iotbit
+   * @param txpin describe parameter here, eg: SerialPin.P8
+   * @param rxpin describe parameter here, eg: SerialPin.P16
+  */
   //%blockId= InitializeSDcard
   //%block="Initialize SD Card TX %tx_pin RX %rx_pin"
 	//%subcategory=SD Card
@@ -1302,7 +1308,7 @@ export enum TextOption {
   //%block="Create CSV File Header* |field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5"
   //%subcategory=SD Card
   //% weight=139
-  export function SetHeader(field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null): void {
+  export function SetHeader(field1: string = null, field2: string = null, field3: string = null, field4: string = null, field5: string = null): void {
       if (field1 != null && field2 != null && field3 != null && field4 != null && field5 != null) {
           let header = field1 + ',' + field2 + ',' + field3 + ',' + field4 + ',' + field5
           serial.writeLine(header)
