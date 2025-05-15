@@ -1298,8 +1298,8 @@ export enum TextOption {
 	//%subcategory=SD Card
   //% weight=140
 
-  export function InitializeSDcard(tx_pin: SerialPin = 8, rx_pin: SerialPin = 16): void {
-    serial.redirect(tx_pin, rx_pin, BaudRate.BaudRate9600);
+  export function InitializeSDcard(txpin: SerialPin, rxpin: SerialPin): void {
+    serial.redirect(txpin, rxpin, BaudRate.BaudRate9600);
     serial.setTxBufferSize(128)
     serial.setRxBufferSize(128)	
 	}
