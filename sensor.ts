@@ -1153,7 +1153,7 @@ export enum TextOption {
 			basic.pause(10);
 		}
 		let avg = sum / 30;
-		OLED.writeNumNewLine(avg);
+		// OLED.writeNumNewLine(avg);
 
 		if (avg > min && avg < max) {
 			battery_level = Math.ceil(
