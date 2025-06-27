@@ -128,7 +128,7 @@ namespace AdvancedModule {
     //% group="Gas"
     //% blockId="readDustValue" block="value of Dust sensor at LEDpin %ledpin Dustpin %dustpin"
     //% weight=60
-    export function ReadDustValue(ledpin:DigitalPin, dustpin: AnalogPin): number {
+    export function ReadDustValue(ledpin: DigitalPin, dustpin: AnalogPin): number {
         let voltage = 0;
         let dust = 0;
         pins.digitalWritePin(ledpin, 0);   //on led
@@ -143,11 +143,11 @@ namespace AdvancedModule {
             0,
             3.3
         );
-        dust = (voltage*0.17-0.1)
+        dust = (voltage * 0.17 - 0.1)
         if (dust < 0) {
             dust = 0
         }
-        return Math.round(dust*1000)
+        return Math.round(dust * 1000)
 
     }
 
@@ -162,7 +162,7 @@ namespace AdvancedModule {
     export function ReadCOValue(MQ7pin: AnalogPin): number {
         let Val = pins.analogReadPin(MQ7pin)
         let Val_map = pins.map(Val, 300, 1023, 0, 100)
-        if(Val_map<0){Val_map=0}
+        if (Val_map < 0) { Val_map = 0 }
         return Val_map
     }
 
@@ -173,7 +173,7 @@ namespace AdvancedModule {
     //% group="Gas"
     //% blockId="readSmokeValue" block="value of MQ2 Smoke sensor at pin %MQ2pin"
     //% weight=58
-	//% blockHidden=true
+    //% blockHidden=true
     export function ReadSmokeValue(MQ2pin: AnalogPin): number {
         let Val = pins.analogReadPin(MQ2pin)
         let Val_map = pins.map(Val, 30, 1023, 0, 100)
@@ -236,10 +236,10 @@ namespace AdvancedModule {
         return Val_map
     }
 
-	// CO2 and TVOC Sensor (CCS811)
-	//----------------------------------------------------------------------------
-	let TVOC_OK = true
-	/* CO2*/
+    // CO2 and TVOC Sensor (CCS811)
+    //----------------------------------------------------------------------------
+    let TVOC_OK = true
+    /* CO2*/
     function indenvGasStatus(): number {
         //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
         //pins.setPull(DigitalPin.P20, PinPullMode.PullUp)
@@ -265,13 +265,13 @@ namespace AdvancedModule {
         }
         return true
     }
-	/**
+    /**
     * CO2 and TVOC Sensor (CCS811) Start
     */
     //% blockId="indenvStart" block="CCS811 Start"
-	//% group="CO2 and TVOC Sensor (CCS811)"
+    //% group="CO2 and TVOC Sensor (CCS811)"
     //% weight=40
-	//% subcategory="Environment"
+    //% subcategory="Environment"
     export function indenvStart(): void {
         TVOC_OK = true
         //pins.setPull(DigitalPin.P19, PinPullMode.PullUp)
@@ -305,15 +305,15 @@ namespace AdvancedModule {
         }
         basic.pause(200)
     }
-	/**
+    /**
      * Set TVOC and CO2 baseline (Baseline should be a decimal value)
      * @param value  , eg: 33915
      */
-	//% group="CO2 and TVOC Sensor (CCS811)"
+    //% group="CO2 and TVOC Sensor (CCS811)"
     //% blockId=CCS811_setBaseline block="set CO2 and TVOC baseline|%value value"
-	//% weight=39
-	//% subcategory="Environment"
-	export function setBaseline(value: number): void {
+    //% weight=39
+    //% subcategory="Environment"
+    export function setBaseline(value: number): void {
         let buffer: Buffer = pins.createBuffer(3);
         buffer[0] = 0x20;
         buffer[1] = value >> 8 & 0xff;
@@ -321,13 +321,13 @@ namespace AdvancedModule {
         pins.i2cWriteBuffer(90, buffer);
 
     }
-	/**
+    /**
     * Read estimated CO2
     */
-	//% group="CO2 and TVOC Sensor (CCS811)"
+    //% group="CO2 and TVOC Sensor (CCS811)"
     //% blockId="indenvgeteCO2" block="Value of CO2"
-	//% weight=38
-	//% subcategory="Environment"
+    //% weight=38
+    //% subcategory="Environment"
     export function indenvgeteCO2(): number {
 
         let i
@@ -347,13 +347,13 @@ namespace AdvancedModule {
         //basic.pause(200)
         return pins.i2cReadNumber(90, NumberFormat.UInt16BE, false)
     }
-	/**
+    /**
     * Read Total VOC
     */
-	//% group="CO2 and TVOC Sensor (CCS811)"
+    //% group="CO2 and TVOC Sensor (CCS811)"
     //% blockId="indenvgetTVOC" block="Value of TVOC"
-	//% weight=37
-	//% subcategory="Environment"
+    //% weight=37
+    //% subcategory="Environment"
     export function indenvgetTVOC(): number {
 
         let i
@@ -375,8 +375,8 @@ namespace AdvancedModule {
     }
 
 
-//Laser Dust Sensor (FS00202)
-//-------------------------------------------------------------------------
+    //Laser Dust Sensor (FS00202)
+    //-------------------------------------------------------------------------
 
     export enum PmMenu {
         //% block="PM1.0"
@@ -392,9 +392,9 @@ namespace AdvancedModule {
     /**
       * Read PM1.0, PM2.5 & PM10
       */
-	  
+
     //% group="Laser Dust Sensor (FS00202)"
-	//% subcategory="Environment"
+    //% subcategory="Environment"
     //% blockId="readLaserDustSensor" //% block="Get %pmType (ug/m3) at I2C"
     //% weight=15
     export function PMdata(pmType: PmMenu): number {
@@ -406,37 +406,34 @@ namespace AdvancedModule {
         }
         let data = [-1, -1, -1]
         if (sum == ((buffer[30] << 8) | buffer[31])) {
-          data[0] = Math.round(((buffer[0x04] << 8) | buffer[0x05]) / 2.002 )
-          data[1] = Math.round(((buffer[0x06] << 8) | buffer[0x07]) / 2.093 )
-          data[2] = Math.round(((buffer[0x08] << 8) | buffer[0x09]) / 1.841 )
+            data[0] = Math.round(((buffer[0x04] << 8) | buffer[0x05]) / 2.002)
+            data[1] = Math.round(((buffer[0x06] << 8) | buffer[0x07]) / 2.093)
+            data[2] = Math.round(((buffer[0x08] << 8) | buffer[0x09]) / 1.841)
         }
         return data[pmType]
     }
 
 
-//TM1637
-//-------------------------------------------------------------------------
-    let TubeTab: number [] = [
-    0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07,
-    0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71
-];
+    //TM1637
+    //-------------------------------------------------------------------------
+    let TubeTab: number[] = [
+        0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07,
+        0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71
+    ];
     /**
      *
      */
-    export class TM1637
-    {
+    export class TM1637 {
         clkPin: DigitalPin;
         dataPin: DigitalPin;
         brightnessLevel: number;
         pointFlag: boolean;
         buf: Buffer;
 
-        private writeByte(wrData: number)
-        {
-            for(let i = 0; i < 8; i ++)
-            {
+        private writeByte(wrData: number) {
+            for (let i = 0; i < 8; i++) {
                 pins.digitalWritePin(this.clkPin, 0);
-                if(wrData & 0x01)pins.digitalWritePin(this.dataPin, 1);
+                if (wrData & 0x01) pins.digitalWritePin(this.dataPin, 1);
                 else pins.digitalWritePin(this.dataPin, 0);
                 wrData >>= 1;
                 pins.digitalWritePin(this.clkPin, 1);
@@ -447,30 +444,27 @@ namespace AdvancedModule {
             pins.digitalWritePin(this.clkPin, 1);
         }
 
-        private start()
-        {
+        private start() {
             pins.digitalWritePin(this.clkPin, 1);
             pins.digitalWritePin(this.dataPin, 1);
             pins.digitalWritePin(this.dataPin, 0);
             pins.digitalWritePin(this.clkPin, 0);
         }
 
-        private stop()
-        {
+        private stop() {
             pins.digitalWritePin(this.clkPin, 0);
             pins.digitalWritePin(this.dataPin, 0);
             pins.digitalWritePin(this.clkPin, 1);
             pins.digitalWritePin(this.dataPin, 1);
         }
 
-        private coding(dispData: number): number
-        {
+        private coding(dispData: number): number {
             let pointData = 0;
 
-            if(this.pointFlag == true)pointData = 0x80;
-            else if(this.pointFlag == false)pointData = 0;
+            if (this.pointFlag == true) pointData = 0x80;
+            else if (this.pointFlag == false) pointData = 0;
 
-            if(dispData == 0x7f)dispData = 0x00 + pointData;
+            if (dispData == 0x7f) dispData = 0x00 + pointData;
             else dispData = TubeTab[dispData] + pointData;
 
             return dispData;
@@ -484,66 +478,60 @@ namespace AdvancedModule {
         //% blockId=tm1637_display_number block="%TM1637 |show number|%dispData"
         //% group="TM1637 4-Digit Display"
         //% subcategory=Display
-        show(dispData: number)
-        {
-            let compare_01:number = dispData % 100;
-            let compare_001:number = dispData % 1000;
+        show(dispData: number) {
+            let compare_01: number = dispData % 100;
+            let compare_001: number = dispData % 1000;
 
-            if(dispData < 10)
-            {
+            if (dispData < 10) {
                 this.bit(dispData, 3);
                 this.bit(0x7f, 2);
                 this.bit(0x7f, 1);
                 this.bit(0x7f, 0);
             }
-            else if(dispData < 100)
-            {
+            else if (dispData < 100) {
                 this.bit(dispData % 10, 3);
-                if(dispData > 90){
+                if (dispData > 90) {
                     this.bit(9, 2);
-                } else{
+                } else {
                     this.bit(Math.floor(dispData / 10) % 10, 2);
                 }
 
                 this.bit(0x7f, 1);
                 this.bit(0x7f, 0);
             }
-            else if(dispData < 1000)
-            {
+            else if (dispData < 1000) {
                 this.bit(dispData % 10, 3);
-                if(compare_01 > 90){
+                if (compare_01 > 90) {
                     this.bit(9, 2);
-                } else{
+                } else {
                     this.bit(Math.floor(dispData / 10) % 10, 2);
                 }
-                if(compare_001 > 900){
+                if (compare_001 > 900) {
                     this.bit(9, 1);
-                } else{
+                } else {
                     this.bit(Math.floor(dispData / 100) % 10, 1);
                 }
                 this.bit(0x7f, 0);
             }
-            else if(dispData < 10000)
-            {
+            else if (dispData < 10000) {
                 this.bit(dispData % 10, 3);
-                if(compare_01 > 90){
+                if (compare_01 > 90) {
                     this.bit(9, 2);
-                } else{
+                } else {
                     this.bit(Math.floor(dispData / 10) % 10, 2);
                 }
-                if(compare_001 > 900){
+                if (compare_001 > 900) {
                     this.bit(9, 1);
-                } else{
+                } else {
                     this.bit(Math.floor(dispData / 100) % 10, 1);
                 }
-                if(dispData > 9000){
+                if (dispData > 9000) {
                     this.bit(9, 0);
-                } else{
+                } else {
                     this.bit(Math.floor(dispData / 1000) % 10, 0);
                 }
             }
-            else
-            {
+            else {
                 this.bit(9, 3);
                 this.bit(9, 2);
                 this.bit(9, 1);
@@ -559,8 +547,7 @@ namespace AdvancedModule {
         //% level.min=0 level.max=7
         //% group="TM1637 4-Digit Display"
         //% subcategory=Display
-        set(level: number)
-        {
+        set(level: number) {
             this.brightnessLevel = level;
 
             this.bit(this.buf[0], 0x00);
@@ -579,10 +566,8 @@ namespace AdvancedModule {
         //% bitAddr.min=0 bitAddr.max=3
         //% group="TM1637 4-Digit Display"
         //% subcategory=Display
-        bit(dispData: number, bitAddr: number)
-        {
-            if((dispData == 0x7f) || ((dispData <= 9) && (bitAddr <= 3)))
-            {
+        bit(dispData: number, bitAddr: number) {
+            if ((dispData == 0x7f) || ((dispData <= 9) && (bitAddr <= 3))) {
                 let segData = 0;
 
                 segData = this.coding(dispData);
@@ -608,8 +593,7 @@ namespace AdvancedModule {
         //% blockId=tm1637_display_point block="%TM1637 |turn|%point|colon point"
         //% group="TM1637 4-Digit Display"
         //% subcategory=Display
-        point(point: boolean)
-        {
+        point(point: boolean) {
             this.pointFlag = point;
 
             this.bit(this.buf[0], 0x00);
@@ -624,8 +608,7 @@ namespace AdvancedModule {
         //% blockId=tm1637_display_clear block="%TM1637|clear"
         //% group="TM1637 4-Digit Display"
         //% subcategory=Display
-        clear()
-        {
+        clear() {
             this.bit(0x7f, 0x00);
             this.bit(0x7f, 0x01);
             this.bit(0x7f, 0x02);
@@ -642,8 +625,7 @@ namespace AdvancedModule {
     //% group="TM1637 4-Digit Display"
     //% blockSetVariable=TM1637
     //% subcategory=Display
-    export function createDisplay(clkPin: DigitalPin, dataPin: DigitalPin): TM1637
-    {
+    export function createDisplay(clkPin: DigitalPin, dataPin: DigitalPin): TM1637 {
         let display = new TM1637();
 
         display.buf = pins.createBuffer(4);
@@ -656,517 +638,535 @@ namespace AdvancedModule {
         return display;
     }
 
-//LCD1602
-//-----------------------------------------------------
+    //LCD1602
+    //-----------------------------------------------------
 
 
-export enum LcdPosition1602 {
-  //% block="1"
-  Pos1 = 1,
-  //% block="2"
-  Pos2 = 2,
-  //% block="3"
-  Pos3 = 3,
-  //% block="4"
-  Pos4 = 4,
-  //% block="5"
-  Pos5 = 5,
-  //% block="6"
-  Pos6 = 6,
-  //% block="7"
-  Pos7 = 7,
-  //% block="8"
-  Pos8 = 8,
-  //% block="9"
-  Pos9 = 9,
-  //% block="10"
-  Pos10 = 10,
-  //% block="11"
-  Pos11 = 11,
-  //% block="12"
-  Pos12 = 12,
-  //% block="13"
-  Pos13 = 13,
-  //% block="14"
-  Pos14 = 14,
-  //% block="15"
-  Pos15 = 15,
-  //% block="16"
-  Pos16 = 16,
-  //% block="17"
-  Pos17 = 17,
-  //% block="18"
-  Pos18 = 18,
-  //% block="19"
-  Pos19 = 19,
-  //% block="20"
-  Pos20 = 20,
-  //% block="21"
-  Pos21 = 21,
-  //% block="22"
-  Pos22 = 22,
-  //% block="23"
-  Pos23 = 23,
-  //% block="24"
-  Pos24 = 24,
-  //% block="25"
-  Pos25 = 25,
-  //% block="26"
-  Pos26 = 26,
-  //% block="27"
-  Pos27 = 27,
-  //% block="28"
-  Pos28 = 28,
-  //% block="29"
-  Pos29 = 29,
-  //% block="30"
-  Pos30 = 30,
-  //% block="31"
-  Pos31 = 31,
-  //% block="32"
-  Pos32 = 32
-}
-
-
-
-export enum LcdBacklight {
-  //% block="off"
-  Off = 0,
-  //% block="on"
-  On = 8
-}
-
-export enum TextAlignment {
-  //% block="left-aligned"
-  Left,
-  //% block="right-aligned"
-  Right,
-  //% block="center-aligned"
-  Center
-}
-
-export enum TextOption {
-  //% block="align left"
-  AlignLeft,
-  //% block="align right"
-  AlignRight,
-  //% block="align center"
-  AlignCenter
-}
-
-
-  export enum Lcd {
-    Command = 0,
-    Data = 1
-  }
-
-  interface LcdState {
-    i2cAddress: uint8;
-    backlight: LcdBacklight;
-    characters: Buffer;
-    rows: uint8;
-    columns: uint8;
-    lineNeedsUpdate: uint8;
-    refreshIntervalId: number;
-  }
-
-  let lcdState: LcdState = undefined;
-
-  function connect(): boolean {
-    if (0 != pins.i2cReadNumber(39, NumberFormat.Int8LE, false)) {
-      // PCF8574
-      connectLcd();
-    } else if (0 != pins.i2cReadNumber(63, NumberFormat.Int8LE, false)) {
-      // PCF8574A
-      connectLcd();
-    }
-    return !!lcdState;
-  }
-
-  // Write 4 bits (high nibble) to I2C bus
-  function write4bits(value: number) {
-    if (!lcdState && !connect()) {
-      return;
-    }
-    pins.i2cWriteNumber(lcdState.i2cAddress, value, NumberFormat.Int8LE);
-    pins.i2cWriteNumber(lcdState.i2cAddress, value | 0x04, NumberFormat.Int8LE);
-    control.waitMicros(1);
-    pins.i2cWriteNumber(
-      lcdState.i2cAddress,
-      value & (0xff ^ 0x04),
-      NumberFormat.Int8LE
-    );
-    control.waitMicros(50);
-  }
-
-  // Send high and low nibble
-  function send(RS_bit: number, payload: number) {
-    if (!lcdState) {
-      return;
-    }
-    const highnib = payload & 0xf0;
-    write4bits(highnib | lcdState.backlight | RS_bit);
-    const lownib = (payload << 4) & 0xf0;
-    write4bits(lownib | lcdState.backlight | RS_bit);
-  }
-
-  // Send command
-  function sendCommand(command: number) {
-    send(Lcd.Command, command);
-  }
-
-  // Send data
-  function sendData(data: number) {
-    send(Lcd.Data, data);
-  }
-
-  // Set cursor
-  function setCursor(line: number, column: number) {
-    const offsets = [0x00, 0x40, 0x14, 0x54];
-    sendCommand(0x80 | (offsets[line] + column));
-  }
-
-  function updateCharacterBuffer(
-    text: string,
-    offset: number,
-    length: number,
-    columns: number,
-    rows: number,
-    alignment: TextAlignment,
-    pad: string
-  ): void {
-    if (!lcdState && !connect()) {
-      return;
+    export enum LcdPosition1602 {
+        //% block="1"
+        Pos1 = 1,
+        //% block="2"
+        Pos2 = 2,
+        //% block="3"
+        Pos3 = 3,
+        //% block="4"
+        Pos4 = 4,
+        //% block="5"
+        Pos5 = 5,
+        //% block="6"
+        Pos6 = 6,
+        //% block="7"
+        Pos7 = 7,
+        //% block="8"
+        Pos8 = 8,
+        //% block="9"
+        Pos9 = 9,
+        //% block="10"
+        Pos10 = 10,
+        //% block="11"
+        Pos11 = 11,
+        //% block="12"
+        Pos12 = 12,
+        //% block="13"
+        Pos13 = 13,
+        //% block="14"
+        Pos14 = 14,
+        //% block="15"
+        Pos15 = 15,
+        //% block="16"
+        Pos16 = 16,
+        //% block="17"
+        Pos17 = 17,
+        //% block="18"
+        Pos18 = 18,
+        //% block="19"
+        Pos19 = 19,
+        //% block="20"
+        Pos20 = 20,
+        //% block="21"
+        Pos21 = 21,
+        //% block="22"
+        Pos22 = 22,
+        //% block="23"
+        Pos23 = 23,
+        //% block="24"
+        Pos24 = 24,
+        //% block="25"
+        Pos25 = 25,
+        //% block="26"
+        Pos26 = 26,
+        //% block="27"
+        Pos27 = 27,
+        //% block="28"
+        Pos28 = 28,
+        //% block="29"
+        Pos29 = 29,
+        //% block="30"
+        Pos30 = 30,
+        //% block="31"
+        Pos31 = 31,
+        //% block="32"
+        Pos32 = 32
     }
 
-    if (!lcdState.refreshIntervalId) {
-      lcdState.refreshIntervalId = control.setInterval(refreshDisplay, 500, control.IntervalMode.Timeout)
+
+
+    export enum LcdBacklight {
+        //% block="off"
+        Off = 0,
+        //% block="on"
+        On = 8
     }
 
-    if (lcdState.columns === 0) {
-      lcdState.columns = columns;
-      lcdState.rows = rows;
-      lcdState.characters = pins.createBuffer(lcdState.rows * lcdState.columns);
-
-      // Clear display and buffer
-      const whitespace = "x".charCodeAt(0);
-      for (let pos = 0; pos < lcdState.rows * lcdState.columns; pos++) {
-        lcdState.characters[pos] = whitespace;
-      }
-      updateCharacterBuffer(
-        "",
-        0,
-        lcdState.columns * lcdState.rows,
-        lcdState.columns,
-        lcdState.rows,
-        TextAlignment.Left,
-        " "
-      );
+    export enum TextAlignment {
+        //% block="left-aligned"
+        Left,
+        //% block="right-aligned"
+        Right,
+        //% block="center-aligned"
+        Center
     }
 
-    if (columns !== lcdState.columns || rows !== lcdState.rows) {
-      return;
+    export enum TextOption {
+        //% block="align left"
+        AlignLeft,
+        //% block="align right"
+        AlignRight,
+        //% block="align center"
+        AlignCenter
     }
 
-    const fillCharacter =
-      pad.length > 0 ? pad.charCodeAt(0) : " ".charCodeAt(0);
 
-    let endPosition = offset + length;
-    if (endPosition > lcdState.columns * lcdState.rows) {
-      endPosition = lcdState.columns * lcdState.rows;
-    }
-    let lcdPos = offset;
-
-    // Add padding at the beginning
-    let paddingEnd = offset;
-
-    if (alignment === TextAlignment.Right) {
-      paddingEnd = endPosition - text.length;
-    }
-    else if (alignment === TextAlignment.Center) {
-      paddingEnd = offset + Math.idiv(endPosition - offset - text.length, 2);
+    export enum Lcd {
+        Command = 0,
+        Data = 1
     }
 
-    while (lcdPos < paddingEnd) {
-      if (lcdState.characters[lcdPos] != fillCharacter) {
-        lcdState.characters[lcdPos] = fillCharacter;
-        lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
-      }
-      lcdPos++;
+    interface LcdState {
+        i2cAddress: uint8;
+        backlight: LcdBacklight;
+        characters: Buffer;
+        rows: uint8;
+        columns: uint8;
+        lineNeedsUpdate: uint8;
+        refreshIntervalId: number;
     }
 
-    // Copy the text
-    let textPosition = 0;
-    while (lcdPos < endPosition && textPosition < text.length) {
+    let lcdState: LcdState = undefined;
 
-      if (lcdState.characters[lcdPos] != text.charCodeAt(textPosition)) {
-        lcdState.characters[lcdPos] = text.charCodeAt(textPosition);
-        lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
-      }
-      lcdPos++;
-      textPosition++;
+    function connect(): boolean {
+        if (0 != pins.i2cReadNumber(39, NumberFormat.Int8LE, false)) {
+            // PCF8574
+            connectLcd();
+        } else if (0 != pins.i2cReadNumber(63, NumberFormat.Int8LE, false)) {
+            // PCF8574A
+            connectLcd();
+        }
+        return !!lcdState;
     }
 
-    // Add padding at the end
-    while (lcdPos < endPosition) {
-      if (lcdState.characters[lcdPos] != fillCharacter) {
-        lcdState.characters[lcdPos] = fillCharacter;
-        lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
-      }
-      lcdPos++;
+    // Write 4 bits (high nibble) to I2C bus
+    function write4bits(value: number) {
+        if (!lcdState && !connect()) {
+            return;
+        }
+        pins.i2cWriteNumber(lcdState.i2cAddress, value, NumberFormat.Int8LE);
+        pins.i2cWriteNumber(lcdState.i2cAddress, value | 0x04, NumberFormat.Int8LE);
+        control.waitMicros(1);
+        pins.i2cWriteNumber(
+            lcdState.i2cAddress,
+            value & (0xff ^ 0x04),
+            NumberFormat.Int8LE
+        );
+        control.waitMicros(50);
     }
-  }
 
-  function sendLine(line: number): void {
-    setCursor(line, 0);
-
-    for (let position = lcdState.columns * line; position < lcdState.columns * (line + 1); position++) {
-      sendData(lcdState.characters[position]);
+    // Send high and low nibble
+    function send(RS_bit: number, payload: number) {
+        if (!lcdState) {
+            return;
+        }
+        const highnib = payload & 0xf0;
+        write4bits(highnib | lcdState.backlight | RS_bit);
+        const lownib = (payload << 4) & 0xf0;
+        write4bits(lownib | lcdState.backlight | RS_bit);
     }
-  }
 
-  function refreshDisplay() {
-    if (!lcdState) {
-      return;
+    // Send command
+    function sendCommand(command: number) {
+        send(Lcd.Command, command);
     }
-    lcdState.refreshIntervalId = undefined
 
-    for (let i = 0; i < lcdState.rows; i++) {
-      if (lcdState.lineNeedsUpdate & 1 << i) {
-        lcdState.lineNeedsUpdate &= ~(1 << i)
-        sendLine(i)
-      }
+    // Send data
+    function sendData(data: number) {
+        send(Lcd.Data, data);
     }
-  }
 
-  function toAlignment(option?: TextOption): TextAlignment {
-    if (
-      option === TextOption.AlignRight
-    ) {
-      return TextAlignment.Right;
-    } else if (option === TextOption.AlignCenter) {
-      return TextAlignment.Center;
-    } else {
-      return TextAlignment.Left;
+    // Set cursor
+    function setCursor(line: number, column: number) {
+        const offsets = [0x00, 0x40, 0x14, 0x54];
+        sendCommand(0x80 | (offsets[line] + column));
     }
-  }
+
+    function updateCharacterBuffer(
+        text: string,
+        offset: number,
+        length: number,
+        columns: number,
+        rows: number,
+        alignment: TextAlignment,
+        pad: string
+    ): void {
+        if (!lcdState && !connect()) {
+            return;
+        }
+
+        if (!lcdState.refreshIntervalId) {
+            lcdState.refreshIntervalId = control.setInterval(refreshDisplay, 500, control.IntervalMode.Timeout)
+        }
+
+        if (lcdState.columns === 0) {
+            lcdState.columns = columns;
+            lcdState.rows = rows;
+            lcdState.characters = pins.createBuffer(lcdState.rows * lcdState.columns);
+
+            // Clear display and buffer
+            const whitespace = "x".charCodeAt(0);
+            for (let pos = 0; pos < lcdState.rows * lcdState.columns; pos++) {
+                lcdState.characters[pos] = whitespace;
+            }
+            updateCharacterBuffer(
+                "",
+                0,
+                lcdState.columns * lcdState.rows,
+                lcdState.columns,
+                lcdState.rows,
+                TextAlignment.Left,
+                " "
+            );
+        }
+
+        if (columns !== lcdState.columns || rows !== lcdState.rows) {
+            return;
+        }
+
+        const fillCharacter =
+            pad.length > 0 ? pad.charCodeAt(0) : " ".charCodeAt(0);
+
+        let endPosition = offset + length;
+        if (endPosition > lcdState.columns * lcdState.rows) {
+            endPosition = lcdState.columns * lcdState.rows;
+        }
+        let lcdPos = offset;
+
+        // Add padding at the beginning
+        let paddingEnd = offset;
+
+        if (alignment === TextAlignment.Right) {
+            paddingEnd = endPosition - text.length;
+        }
+        else if (alignment === TextAlignment.Center) {
+            paddingEnd = offset + Math.idiv(endPosition - offset - text.length, 2);
+        }
+
+        while (lcdPos < paddingEnd) {
+            if (lcdState.characters[lcdPos] != fillCharacter) {
+                lcdState.characters[lcdPos] = fillCharacter;
+                lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
+            }
+            lcdPos++;
+        }
+
+        // Copy the text
+        let textPosition = 0;
+        while (lcdPos < endPosition && textPosition < text.length) {
+
+            if (lcdState.characters[lcdPos] != text.charCodeAt(textPosition)) {
+                lcdState.characters[lcdPos] = text.charCodeAt(textPosition);
+                lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
+            }
+            lcdPos++;
+            textPosition++;
+        }
+
+        // Add padding at the end
+        while (lcdPos < endPosition) {
+            if (lcdState.characters[lcdPos] != fillCharacter) {
+                lcdState.characters[lcdPos] = fillCharacter;
+                lcdState.lineNeedsUpdate |= (1 << Math.idiv(lcdPos, lcdState.columns))
+            }
+            lcdPos++;
+        }
+    }
+
+    function sendLine(line: number): void {
+        setCursor(line, 0);
+
+        for (let position = lcdState.columns * line; position < lcdState.columns * (line + 1); position++) {
+            sendData(lcdState.characters[position]);
+        }
+    }
+
+    function refreshDisplay() {
+        if (!lcdState) {
+            return;
+        }
+        lcdState.refreshIntervalId = undefined
+
+        for (let i = 0; i < lcdState.rows; i++) {
+            if (lcdState.lineNeedsUpdate & 1 << i) {
+                lcdState.lineNeedsUpdate &= ~(1 << i)
+                sendLine(i)
+            }
+        }
+    }
+
+    function toAlignment(option?: TextOption): TextAlignment {
+        if (
+            option === TextOption.AlignRight
+        ) {
+            return TextAlignment.Right;
+        } else if (option === TextOption.AlignCenter) {
+            return TextAlignment.Center;
+        } else {
+            return TextAlignment.Left;
+        }
+    }
 
 
 
 
 
- /**
-   * Displays a text on a LCD1602 in the given position range.
-   * The text will be cropped if it is longer than the provided length.
-   * If there is space left, it will be filled with pad characters.
-   * @param text the text to show, eg: "Smarthon"
-   * @param startPosition the start position on the LCD, [1 - 32]
-   * @param length the maximum space used on the LCD, eg: 16
-   * @param option configures alignment, eg: TextOption.Left
-   */
-  //% subcategory=Display
-  //% blockId="lcd_show_string_on_1602"
-  //% block="LCD show %text | at position %startPosition=lcd_position_1602 with length %length || and %option"
-  //% text.shadowOptions.toString=true
-  //% length.min=1 length.max=32 length.fieldOptions.precision=1
-  //% expandableArgumentMode="toggle"
-  //% inlineInputMode="inline"
-  //% weight=90
-  //% group="LCD1602"
-  export function showStringOnLcd1602(
-    text: string,
-    startPosition: number,
-    length: number,
-    option?: TextOption
-  ): void {
-    updateCharacterBuffer(
-      text,
-      startPosition-1,
-      length,
-      16,
-      2,
-      toAlignment(option),
-      " "
-    );
-  }
-
-
-
-/**
-   * Clears the LCD1602 completely.
-   */
-  //% subcategory=Display
-  //% blockId="lcd_clear_1602" block="LCD clear display"
-  //% weight=75
-  //% group="LCD1602"
-  export function clearLcd1602(): void {
-    showStringOnLcd1602("", 1, 32);
-  }
-
-
-  /**
-   * Turns a LCD position into a number.
-   * @param pos the LCD position, eg: LcdPosition1602.Pos1
-   */
-  //% subcategory=Display
-  //% blockId=lcd_position_1602
-  //% block="%pos"
-  //% pos.fieldEditor="gridpicker"
-  //% pos.fieldOptions.columns=16
-  //% blockHidden=true
-  //% group="LCD1602"
-  export function position1602(pos: LcdPosition1602): number {
-    return pos;
-  }
-
-
-
-  /**
-   * Enables or disables the backlight of the LCD.
-   * @param backlight new state of backlight, eg: LcdBacklight.On
-   */
-  //% subcategory="LCD1602"
-  //% blockId="makerbit_lcd_backlight" block="LCD backlight %backlight"
-  //% weight=79
+    /**
+      * Displays a text on a LCD1602 in the given position range.
+      * The text will be cropped if it is longer than the provided length.
+      * If there is space left, it will be filled with pad characters.
+      * @param text the text to show, eg: "Smarthon"
+      * @param startPosition the start position on the LCD, [1 - 32]
+      * @param length the maximum space used on the LCD, eg: 16
+      * @param option configures alignment, eg: TextOption.Left
+      */
     //% subcategory=Display
-  export function setLcdBacklight(backlight: LcdBacklight): void {
-    if (!lcdState && !connect()) {
-      return;
+    //% blockId="lcd_show_string_on_1602"
+    //% block="LCD show %text | at position %startPosition=lcd_position_1602 with length %length || and %option"
+    //% text.shadowOptions.toString=true
+    //% length.min=1 length.max=32 length.fieldOptions.precision=1
+    //% expandableArgumentMode="toggle"
+    //% inlineInputMode="inline"
+    //% weight=90
+    //% group="LCD1602"
+    export function showStringOnLcd1602(
+        text: string,
+        startPosition: number,
+        length: number,
+        option?: TextOption
+    ): void {
+        updateCharacterBuffer(
+            text,
+            startPosition - 1,
+            length,
+            16,
+            2,
+            toAlignment(option),
+            " "
+        );
     }
-    lcdState.backlight = backlight;
-    send(Lcd.Command, 0);
-  }
 
 
 
-  /**
-   * Connects to the LCD at a given I2C address.
-   * The addresses 39 (PCF8574) or 63 (PCF8574A) seem to be widely used.
+    /**
+       * Clears the LCD1602 completely.
+       */
+    //% subcategory=Display
+    //% blockId="lcd_clear_1602" block="LCD clear display"
+    //% weight=75
+    //% group="LCD1602"
+    export function clearLcd1602(): void {
+        showStringOnLcd1602("", 1, 32);
+    }
+
+
+    /**
+     * Turns a LCD position into a number.
+     * @param pos the LCD position, eg: LcdPosition1602.Pos1
      */
-  //% subcategory=Display
-  //% blockId="lcd_set_address" block="Initialize LCD at I2C"
-  //% group="LCD1602"
-  //% weight=100
-  export function connectLcd(): void {
-
-    if (0 === pins.i2cReadNumber(39, NumberFormat.Int8LE, false)) {
-      return;
+    //% subcategory=Display
+    //% blockId=lcd_position_1602
+    //% block="%pos"
+    //% pos.fieldEditor="gridpicker"
+    //% pos.fieldOptions.columns=16
+    //% blockHidden=true
+    //% group="LCD1602"
+    export function position1602(pos: LcdPosition1602): number {
+        return pos;
     }
 
-    if (lcdState && lcdState.refreshIntervalId) {
-      control.clearInterval(lcdState.refreshIntervalId, control.IntervalMode.Timeout)
-      lcdState.refreshIntervalId = undefined
+
+
+    /**
+     * Enables or disables the backlight of the LCD.
+     * @param backlight new state of backlight, eg: LcdBacklight.On
+     */
+    //% subcategory="LCD1602"
+    //% blockId="makerbit_lcd_backlight" block="LCD backlight %backlight"
+    //% weight=79
+    //% subcategory=Display
+    export function setLcdBacklight(backlight: LcdBacklight): void {
+        if (!lcdState && !connect()) {
+            return;
+        }
+        lcdState.backlight = backlight;
+        send(Lcd.Command, 0);
     }
 
-    lcdState = {
-      i2cAddress: 39,
-      backlight: LcdBacklight.On,
-      columns: 0,
-      rows: 0,
-      characters: undefined,
-      lineNeedsUpdate: 0,
-      refreshIntervalId: undefined,
-    };
-
-    // Wait 50ms before sending first command to device after being powered on
-    basic.pause(50);
-
-    // Pull both RS and R/W low to begin commands
-    pins.i2cWriteNumber(
-      lcdState.i2cAddress,
-      lcdState.backlight,
-      NumberFormat.Int8LE
-    );
-    basic.pause(50);
-
-    // Set 4bit mode
-    write4bits(0x30);
-    control.waitMicros(4100);
-    write4bits(0x30);
-    control.waitMicros(4100);
-    write4bits(0x30);
-    control.waitMicros(4100);
-    write4bits(0x20);
-    control.waitMicros(1000);
-
-    // Configure function set
-    const LCD_FUNCTIONSET = 0x20;
-    const LCD_4BITMODE = 0x00;
-    const LCD_2LINE = 0x08; // >= 2 lines
-    const LCD_5x8DOTS = 0x00;
-    send(Lcd.Command, LCD_FUNCTIONSET | LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS);
-    control.waitMicros(1000);
-
-    // Configure display
-    const LCD_DISPLAYCONTROL = 0x08;
-    const LCD_DISPLAYON = 0x04;
-    const LCD_CURSOROFF = 0x00;
-    const LCD_BLINKOFF = 0x00;
-    send(
-      Lcd.Command,
-      LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF
-    );
-    control.waitMicros(1000);
-
-    // Set the entry mode
-    const LCD_ENTRYMODESET = 0x04;
-    const LCD_ENTRYLEFT = 0x02;
-    const LCD_ENTRYSHIFTDECREMENT = 0x00;
-    send(
-      Lcd.Command,
-      LCD_ENTRYMODESET | LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT
-    );
-    control.waitMicros(1000);
-  }
-
-  /**
-   * Returns true if a LCD is connected. False otherwise.
-   */
-  //% subcategory=Display
-  //% blockId="lcd_is_connected" block="LCD is connected"
-  //% weight=69
-  //% group="LCD1602"
-  //% blockHidden=true
-  export function isLcdConnected(): boolean {
-    return !!lcdState || connect();
-  }
 
 
-	//Sunlight Charging Module
-	//------------------------------
-	let battery_level = 0
+    /**
+     * Connects to the LCD at a given I2C address.
+     * The addresses 39 (PCF8574) or 63 (PCF8574A) seem to be widely used.
+       */
+    //% subcategory=Display
+    //% blockId="lcd_set_address" block="Initialize LCD at I2C"
+    //% group="LCD1602"
+    //% weight=100
+    export function connectLcd(): void {
 
-	//% subcategory=Environment
-	//% weight=70
-	//% group="Sunlight Charging"
-	//% blockId="smarthon_get_battery_level"
-	//% block="Get battery level (percentage) at Pin %pin"
-  
-	export function getBattery(pin: AnalogPin): number {
-		let max = 1023;   // define the max reading from battery
-		let min = 706;   // define the min reading from battery
-		let sum = 0;
+        if (0 === pins.i2cReadNumber(39, NumberFormat.Int8LE, false)) {
+            return;
+        }
 
-		//  read 30 times to get the average
-		for (let n = 0; n < 30; n++) {
-			sum += pins.analogReadPin(pin);
-			basic.pause(10);
-		}
-		let avg = sum / 30;
-		// OLED.writeNumNewLine(avg);
+        if (lcdState && lcdState.refreshIntervalId) {
+            control.clearInterval(lcdState.refreshIntervalId, control.IntervalMode.Timeout)
+            lcdState.refreshIntervalId = undefined
+        }
 
-		if (avg > min && avg < max) {
-			battery_level = Math.ceil(
-				pins.map(avg, min, max, 0, 100) / 5) * 5;
-			//  round up to multiple of 5
-		}
-		else if (avg > max) {
-			battery_level = 100;
-		}
-		else {
-			battery_level = 0;
-		}
-		return battery_level;
-	}
+        lcdState = {
+            i2cAddress: 39,
+            backlight: LcdBacklight.On,
+            columns: 0,
+            rows: 0,
+            characters: undefined,
+            lineNeedsUpdate: 0,
+            refreshIntervalId: undefined,
+        };
 
+        // Wait 50ms before sending first command to device after being powered on
+        basic.pause(50);
+
+        // Pull both RS and R/W low to begin commands
+        pins.i2cWriteNumber(
+            lcdState.i2cAddress,
+            lcdState.backlight,
+            NumberFormat.Int8LE
+        );
+        basic.pause(50);
+
+        // Set 4bit mode
+        write4bits(0x30);
+        control.waitMicros(4100);
+        write4bits(0x30);
+        control.waitMicros(4100);
+        write4bits(0x30);
+        control.waitMicros(4100);
+        write4bits(0x20);
+        control.waitMicros(1000);
+
+        // Configure function set
+        const LCD_FUNCTIONSET = 0x20;
+        const LCD_4BITMODE = 0x00;
+        const LCD_2LINE = 0x08; // >= 2 lines
+        const LCD_5x8DOTS = 0x00;
+        send(Lcd.Command, LCD_FUNCTIONSET | LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS);
+        control.waitMicros(1000);
+
+        // Configure display
+        const LCD_DISPLAYCONTROL = 0x08;
+        const LCD_DISPLAYON = 0x04;
+        const LCD_CURSOROFF = 0x00;
+        const LCD_BLINKOFF = 0x00;
+        send(
+            Lcd.Command,
+            LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF
+        );
+        control.waitMicros(1000);
+
+        // Set the entry mode
+        const LCD_ENTRYMODESET = 0x04;
+        const LCD_ENTRYLEFT = 0x02;
+        const LCD_ENTRYSHIFTDECREMENT = 0x00;
+        send(
+            Lcd.Command,
+            LCD_ENTRYMODESET | LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT
+        );
+        control.waitMicros(1000);
+    }
+
+    /**
+     * Returns true if a LCD is connected. False otherwise.
+     */
+    //% subcategory=Display
+    //% blockId="lcd_is_connected" block="LCD is connected"
+    //% weight=69
+    //% group="LCD1602"
+    //% blockHidden=true
+    export function isLcdConnected(): boolean {
+        return !!lcdState || connect();
+    }
+
+    //---Sunlight Charging Module---------------
+    let battery_level = 0
+
+    //% subcategory=Environment
+    //% weight=70
+    //% group="Sunlight Charging"
+    //% blockId="smarthon_get_battery_level"
+    //% block="Get battery level (percentage) at Pin %pin"
+
+    export function getBattery(pin: AnalogPin): number {
+        let max = 1023;   // define the max reading from battery
+        let min = 706;   // define the min reading from battery
+        let sum = 0;
+
+        //  read 30 times to get the average
+        for (let n = 0; n < 30; n++) {
+            sum += pins.analogReadPin(pin);
+            basic.pause(10);
+        }
+        let avg = sum / 30;
+        // OLED.writeNumNewLine(avg);
+
+        if (avg > min && avg < max) {
+            battery_level = Math.ceil(
+                pins.map(avg, min, max, 0, 100) / 5) * 5;
+            //  round up to multiple of 5
+        }
+        else if (avg > max) {
+            battery_level = 100;
+        }
+        else {
+            battery_level = 0;
+        }
+        return battery_level;
+    }
+
+    //% subcategory=Environment
+    //% weight=69
+    //% group="Sunlight Charging"
+    //% blockId="smarthon_get_energy_transferred"
+    //% block="Get energy transferred at Pin %pin"
+
+    export function getEnergyTransferred(pin: AnalogPin): number {    
+        return getBattery(pin) * 0.00814
+    }
+
+    //% subcategory=Environment
+    //% weight=68
+    //% group="Sunlight Charging"
+    //% blockId="smarthon_get_CO2_Eliminated"
+    //% block="Get CO2 Eliminated at Pin %pin"
+
+    export function getCO2Eliminated(pin: AnalogPin): number {
+        return getBattery(pin) * 0.00892
+    }
+    //----Sunlight Charging Module-----------------------------
 }
