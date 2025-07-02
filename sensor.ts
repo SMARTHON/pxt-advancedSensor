@@ -460,7 +460,7 @@ namespace AdvancedModule {
     //% weight=69
     //% group="Sunlight Charging"
     //% blockId="smarthon_get_energy_transferred"
-    //% block="Get energy transferred"
+    //% block="Get energy transferred (kWh)"
 
     export function getEnergyTransferred(): number {
         return battery_level * 0.00814;
@@ -470,7 +470,7 @@ namespace AdvancedModule {
     //% weight=68
     //% group="Sunlight Charging"
     //% blockId="smarthon_get_CO2_Eliminated"
-    //% block="Read CO2 Eliminated"
+    //% block="Read CO2 Eliminated (ppm)"
 
     export function readCO2Eliminated(): number {
         return battery_level * 0.00892;
