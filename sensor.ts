@@ -412,7 +412,70 @@ namespace AdvancedModule {
         }
         return data[pmType]
     }
+    //---Sunlight Charging Module---------------
+    let battery_level = 0
 
+    //% subcategory=Environment
+    //% weight=80
+    //% group="Sunlight Charging"
+    //% blockId="smarthon_read_battery_level"
+    //% block="Read battery level (percentage) at Pin %pin"
+
+    export function readBattery(pin: AnalogPin): void {
+        let max = 1023;   // define the max reading from battery
+        let min = 706;   // define the min reading from battery
+        let sum = 0;
+
+        //  read 30 times to get the average
+        for (let n = 0; n < 30; n++) {
+            sum += pins.analogReadPin(pin);
+            basic.pause(10);
+        }
+        let avg = sum / 30;
+        // OLED.writeNumNewLine(avg);
+
+        if (avg > min && avg < max) {
+            battery_level = Math.ceil(
+                pins.map(avg, min, max, 0, 100) / 5) * 5;
+            //  round up to multiple of 5
+        }
+        else if (avg > max) {
+            battery_level = 100;
+        }
+        else {
+            battery_level = 0;
+        }
+    }
+
+    //% subcategory=Environment
+    //% weight=70
+    //% group="Sunlight Charging"
+    //% blockId="smarthon_get_energy_transferred"
+    //% block="Get battery level(percentage)"
+    export function getBattery(): number {
+        return battery_level;
+    }
+
+    //% subcategory=Environment
+    //% weight=69
+    //% group="Sunlight Charging"
+    //% blockId="smarthon_get_energy_transferred"
+    //% block="Get energy transferred"
+
+    export function getEnergyTransferred(): number {
+        return battery_level * 0.00814;
+    }
+
+    //% subcategory=Environment
+    //% weight=68
+    //% group="Sunlight Charging"
+    //% blockId="smarthon_get_CO2_Eliminated"
+    //% block="Read CO2 Eliminated"
+
+    export function readCO2Eliminated(): number {
+        return battery_level * 0.00892;
+    }
+    //----Sunlight Charging Module-----------------------------
 
     //TM1637
     //-------------------------------------------------------------------------
@@ -1113,60 +1176,4 @@ namespace AdvancedModule {
         return !!lcdState || connect();
     }
 
-    //---Sunlight Charging Module---------------
-    let battery_level = 0
-
-    //% subcategory=Environment
-    //% weight=70
-    //% group="Sunlight Charging"
-    //% blockId="smarthon_get_battery_level"
-    //% block="Get battery level (percentage) at Pin %pin"
-
-    export function getBattery(pin: AnalogPin): number {
-        let max = 1023;   // define the max reading from battery
-        let min = 706;   // define the min reading from battery
-        let sum = 0;
-
-        //  read 30 times to get the average
-        for (let n = 0; n < 30; n++) {
-            sum += pins.analogReadPin(pin);
-            basic.pause(10);
-        }
-        let avg = sum / 30;
-        // OLED.writeNumNewLine(avg);
-
-        if (avg > min && avg < max) {
-            battery_level = Math.ceil(
-                pins.map(avg, min, max, 0, 100) / 5) * 5;
-            //  round up to multiple of 5
-        }
-        else if (avg > max) {
-            battery_level = 100;
-        }
-        else {
-            battery_level = 0;
-        }
-        return battery_level;
-    }
-
-    //% subcategory=Environment
-    //% weight=69
-    //% group="Sunlight Charging"
-    //% blockId="smarthon_get_energy_transferred"
-    //% block="Get energy transferred at Pin %pin"
-
-    export function getEnergyTransferred(pin: AnalogPin): number {    
-        return getBattery(pin) * 0.00814
-    }
-
-    //% subcategory=Environment
-    //% weight=68
-    //% group="Sunlight Charging"
-    //% blockId="smarthon_get_CO2_Eliminated"
-    //% block="Get CO2 Eliminated at Pin %pin"
-
-    export function getCO2Eliminated(pin: AnalogPin): number {
-        return getBattery(pin) * 0.00892
-    }
-    //----Sunlight Charging Module-----------------------------
 }
