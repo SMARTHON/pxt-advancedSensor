@@ -1140,8 +1140,8 @@ export function IRdetection(pin: DigitalPin): boolean {
     //% blockId="smarthon_Laser"
     //% block="Get receiver (laser received or not) at %receiver"
     //% weight=2
-	//%group="Laser"
-	//% subcategory="Transport"
+	  //%group="Laser"
+	  //% subcategory="Transport"
 
     export function Laser(receiver: DigitalPin): boolean {
         if (pins.digitalReadPin(receiver))
